@@ -1,0 +1,10 @@
+<h1 mat-dialog-title class="modal-header justify-content-center"></h1>
+<div mat-dialog-content class="modal-body">{{ confirmMessage }}</div>
+<div mat-dialog-actions class="modal-footer justify-content-center">
+  <button mat-button class="btn btn-success" *ngIf="showOkBtn" (click)="dialogRef.close(true)">
+    OK
+  </button>
+  <button mat-button class="btn btn-danger" (click)="dialogRef.close(false)">
+    Close
+  </button>
+</div>

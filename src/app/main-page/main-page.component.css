@@ -1,0 +1,53 @@
+h4{
+    width: 100%;
+    color: rgb(129, 128, 128);
+    border-bottom: 2px solid rgb(129, 128, 128);
+}
+.circle{
+    width: 64px;
+    height: 64px;
+    padding: 1em;
+    border: 2px solid #20c997;
+    border-radius: 50%;
+}
+.block{
+    width: 64px;
+    font-size: 0.8rem;
+    text-align: center;
+    color: rgb(129, 128, 128);
+}
+.title{
+    width: 100%;
+    color: rgb(129, 128, 128);
+    border-bottom: 2px solid rgb(129, 128, 128);
+}
+
+.bi-plus-circle{
+    font-size: 4rem;
+   line-height: 64px;
+   
+    color: rgb(129, 128, 128);
+}
+.plus-wrapper{
+    margin-top: 1.3rem;
+}
+
+.pulsar{
+    animation-name: pulse;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+.selected{
+    border-color: coral;
+}
+@keyframes pulse{
+    50%{
+        border-color: #71fad1;
+        transform: scale(0.9);
+    }
+    100%{
+        border-color: #20c997;
+        transform: scale(1);
+    }
+}

@@ -1,0 +1,10 @@
+.container{
+    height: 100vh;
+}
+
+.loginPanel{
+    padding:50px;
+    border-radius:10px;
+    border: 1px solid gray;
+}
+

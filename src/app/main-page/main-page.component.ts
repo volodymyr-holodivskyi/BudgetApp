@@ -16,8 +16,6 @@ export class MainPageComponent implements OnInit {
   userEmail = localStorage.getItem('email');
   userRefreshToken = localStorage.getItem('refreshToken');
   dialogRef?: MatDialogRef<DialogComponent>;
-  incomesArr: Array<number> = [];
-  savingsArr: Array<number> = [];
   userInfo: IOperations<any> = {
     incomes: null,
     savings: null,
@@ -81,8 +79,6 @@ export class MainPageComponent implements OnInit {
   }
 
   moveIncome(index: number) {
-    
-    
     this.selected.incomes = index;
     this.selected.savings = -1;
     this.highlight.spends = false;

@@ -17,6 +17,7 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (email, done) {
   done(null, email);
 });
+
 passport.use(
   new LocalStrategy(
     {
@@ -38,8 +39,7 @@ passport.use(
           await getUserIncomes(email).then(rows=>user.incomes=rows);
           await getUserSavings(email).then(rows=>user.savings=rows);
           await getUserSpends(email).then(rows=>user.spends=rows);
-          console.log(user);
-          return cb(null, rows[0], {
+          return cb(null, user, {
             message: "Logged In Successfully",
           });
         })
@@ -47,7 +47,7 @@ passport.use(
     }
   )
 );
-
+ 
 passport.use(
   new JWTStrategy(
     {
@@ -63,6 +63,7 @@ passport.use(
     }
   )
 );
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 let refreshTokens = {};
 function loginAuthenticate(req, res, next) {
@@ -80,7 +81,7 @@ function loginAuthenticate(req, res, next) {
           res.send(err);
         }
   
-        const token = jwt.sign({ user: user }, "your_jwt_secret", {
+        const token = jwt.sign({ user: user }, config.SECRET_KEY, {
           expiresIn: 60,
         });
         let refreshToken = randToken.uid(256);
@@ -89,14 +90,14 @@ function loginAuthenticate(req, res, next) {
       });
     })(req, res);
   }
-
+ 
   function generateToken(req, res, next) {
     const email = req.body.email;
     const refreshToken = req.body.refreshToken;
     if (refreshToken in refreshTokens && refreshTokens[refreshToken] === email) {
       getUserByEmail(email)
         .then((rows) => {
-          const token = jwt.sign({ user: rows[0] }, "your_jwt_secret", {
+          const token = jwt.sign({ user: rows[0] }, config.SECRET_KEY, {
             expiresIn: 60,
           });
           return res.json({ email: email, token: token });

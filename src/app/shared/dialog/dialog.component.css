@@ -1,0 +1,33 @@
+.calculator{
+    display: flex;
+    flex-wrap: wrap;
+}
+.screenContent{
+    width: 100%;
+    padding: 3rem;
+    max-height:10%;
+    background-color: #20c997;
+    color: blanchedalmond;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    word-break: break-all;
+    word-wrap: break-word;
+    font-size: 24px;
+    font-weight: bold;
+}
+.char,.delBtn,.allClrBtn,.getResBtn{
+    font-size: 1rem;
+    padding: 1rem;
+    font-weight: bold;
+    border-radius: 2px;
+    cursor: pointer;
+    border:none
+
+}
+.char:hover,.delBtn:hover,.allClrBtn:hover,.getResBtn:hover{
+    background-color: rgb(141, 186, 201);
+}
+.bi-check-lg{
+    color: #20c997;
+}

@@ -9,7 +9,12 @@ h4{
     padding: 1em;
     border: 2px solid #20c997;
     border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
+
 .block{
     width: 64px;
     font-size: 0.8rem;
@@ -38,6 +43,9 @@ h4{
     animation-iteration-count: infinite;
 }
 
+.p-0{
+    padding: 0;
+}
 .selected{
     border-color: coral;
 }
@@ -50,4 +58,21 @@ h4{
         border-color: #20c997;
         transform: scale(1);
     }
+}
+
+mat-icon{
+    color:rgb(153, 153, 153);
+    font-size: 2em;
+}
+.spiner-con{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.342);
 }

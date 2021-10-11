@@ -1,27 +1,40 @@
 <header class="d-flex ">
     <div class="col-1">
         <div class="bg-teal px-3 d-flex justify-content-center align-items-center col-6 h-100">
-             <i class="bi bi-grid" [routerLink]="['/login']"></i>
+            <button class="btn" mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon class="cursor-pointer menu-icon">grid_view</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              </mat-menu>
         </div>
         <div class="col-6"></div>
     </div>
     
     <div class="d-flex align-items-center justify-content-evenly bg-teal col-11">
         <div class="d-flex align-items-center">
-            <i class="bi bi-person-circle"></i>
-            <div class="mx-3">USER:{{userName}} {{userSurname}}</div>
+            
+            <mat-icon>person</mat-icon>
+            <div class="mx-3">USER:{{user.firstName}} {{user.lastName}}</div>
         </div>
         <div class="d-flex align-items-center">
-            <i class="bi bi-wallet2"></i>
-            <div class="mx-3">BALANCE:{{userBalance}}</div>
+            
+            <mat-icon>account_balance_wallet</mat-icon>
+            <div class="mx-3">BALANCE:{{user.balance|currency}}</div>
         </div>
         <div class="d-flex align-items-center">
-            <i class="bi bi-cash-coin"></i>
-            <div class="mx-3">EXPENCES:{{userExpences}}</div>
+            
+            <mat-icon>payments</mat-icon>
+            <div class="mx-3">EXPENCES:{{user.expences|currency}}</div>
         </div>
         <div class="d-flex align-items-center">
-            <i class="bi bi-calendar-date"></i>
+            
+            <mat-icon>today</mat-icon>
             <div class="mx-3">DATE:{{currentDate}}</div>
         </div>
+
+        <div class="d-flex align-items-center">
+            <mat-icon [routerLink]="['/login']" class="cursor-pointer">logout</mat-icon>
+        </div>
     </div>
+   
 </header>

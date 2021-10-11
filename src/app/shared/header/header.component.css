@@ -1,9 +1,11 @@
 header{
     height: 5vh;
 }
-.bi{
-    font-size: 2em;
+mat-icon{
+    font-size: 2.5em;
     color: #fff;
+    width: max-content;
+    height: max-content;
 }
 
 .bg-teal{
@@ -11,4 +13,15 @@ header{
 }
 .h-100{
     height: 100%;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+.menu-icon{
+    font-size: 2em;
+    color: #fff;
+}
+button{
+    line-height: 100%;
 }

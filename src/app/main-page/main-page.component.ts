@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router,RouterEvent,NavigationStart,NavigationEnd } from '@angular/router';
 import { DialogComponent } from '../shared/dialog/dialog.component';
-import { HttpService } from '../shared/services/http.service';
+import { User } from '../shared/models/user';
+import { HttpService } from '../shared/services/http-service/http.service';
 
 interface IOperations<T> {
   [key: string]: T;
@@ -13,8 +15,12 @@ interface IOperations<T> {
   styleUrls: ['./main-page.component.css'],
 })
 export class MainPageComponent implements OnInit {
-  userEmail = localStorage.getItem('email');
+  user:User=new User('','','','',0,0,[],[],[]);
+  userEmail = <string>localStorage.getItem('email');
   userRefreshToken = localStorage.getItem('refreshToken');
+  
+  isLoader:boolean|undefined;
+  getUserInfo=this.httpService.getUserInfo(this.userEmail)
   dialogRef?: MatDialogRef<DialogComponent>;
   userInfo: IOperations<any> = {
     incomes: null,
@@ -35,46 +41,74 @@ export class MainPageComponent implements OnInit {
     incomes:[],
     savings:[]
   }
-  constructor(private httpService: HttpService, private dialog: MatDialog) {}
-
-  ngOnInit(): void {
+  constructor(private httpService: HttpService, private dialog: MatDialog,private router:Router) {
+    
+  }
+  
+   ngOnInit(): void {
+    
+    this.getUserInfo.subscribe(data=>{
+      this.user=data; 
+    }) 
+    
     for (const key in this.userInfo) {
       if (Object.prototype.hasOwnProperty.call(this.userInfo, key)) {
         this.userInfo[key] = JSON.parse(<string>localStorage.getItem(key));
       }
     }
-
-    this.httpService.getToken(this.userEmail, this.userRefreshToken);
+    
+    
+    
+    
+    this.httpService.getToken(this.userEmail, this.userRefreshToken)?.subscribe();
     setInterval(() => {
-      this.httpService.getToken(this.userEmail, this.userRefreshToken);
+      this.httpService.getToken(this.userEmail, this.userRefreshToken)?.subscribe();
     }, 30000);
   }
 
-  openConfirmationDialog(source: string, index: number) {
+ async openConfirmationDialog(source: string, index: number) {
     if (!this.highlight.savings && source === 'savings') return;
 
     this.dialogRef = this.dialog.open(DialogComponent, {
       disableClose: false,
       hasBackdrop: true,
+      width:'30%'
     });
-    this.dialogRef.componentInstance.showOkBtn = true;
-    if (this.highlight.savings && source === 'savings') {
-      this.dialogRef.componentInstance.confirmMessage = `Move ${
-        this.userInfo.incomes[this.selected.incomes].category
-      } into ${this.userInfo.savings[index].category}?`;
+    for (const key in this.selected) {
+      if (Object.prototype.hasOwnProperty.call(this.selected, key)) {
+        if(this.selected[key]!==-1){
+          this.dialogRef.componentInstance.validValue=parseFloat(this.user[key][this.selected[key]].value);
+           this.dialogRef.componentInstance.source=key;
+           this.dialogRef.componentInstance.sourceCategory=this.user[key][this.selected[key]].category;
+           this.choicesArray[key]=[];
+        }
+      }
     }
-    if (this.highlight.spends && source === 'spends') {
-      this.dialogRef.componentInstance.confirmMessage = `Use ${
-        this.userInfo.savings[this.selected.savings].category
-      } on ${this.userInfo.spends[index].category}?`;
-    }
+    this.dialogRef.componentInstance.userEmail=this.user.email
+    this.dialogRef.componentInstance.target=source;
+    this.dialogRef.componentInstance.targetCategory=this.user[source][index].category;
+    this.dialogRef.componentInstance.showCalc=true;
     if (!this.highlight.spends && source === 'spends') {
       this.dialogRef.componentInstance.confirmMessage =
         'Activate any of savings buttons first';
-      this.dialogRef.componentInstance.showOkBtn = false;
+      this.dialogRef.componentInstance.showCalc = false;
     }
-    return this.dialogRef.afterClosed().subscribe((result) => {
-      if (result) this.highlight[source] = false;
+      
+    
+    return this.dialogRef.afterClosed().subscribe(async(result) => {
+      this.getUserInfo.subscribe(data=>{
+        this.user=data;
+                 
+        for (const key in this.userInfo) {
+          if (Object.prototype.hasOwnProperty.call(this.userInfo, key)) {
+             this.userInfo[key]=data[key]
+            
+          }
+        }
+        
+      })
+      this.highlight[source] = false;
+          
     });
   }
 

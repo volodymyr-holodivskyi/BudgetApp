@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
+import { User } from '../models/user';
+
 
 @Component({
   selector: 'app-header',
@@ -6,18 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  userName:string|null='';
-  userSurname:string|null='';
-  userBalance:string|null='';
-  userExpences:string|null='';
+ 
+  @Input()user:User=new User('','','','',0,0,[],[],[]);
+
   currentDate:string=new Date().toLocaleDateString('ru-RU')
   constructor() { }
 
   ngOnInit(): void {
-    this.userName=localStorage.getItem('name');
-    this.userSurname=localStorage.getItem('surname');
-    this.userBalance=localStorage.getItem('balance');
-    this.userExpences=localStorage.getItem('expences');
+    
+    
   }
-
+ 
 }

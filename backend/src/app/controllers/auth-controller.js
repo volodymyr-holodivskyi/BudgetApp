@@ -31,11 +31,11 @@ passport.use(
           if (rows.length === 0) {
             return cb(null, false, { message: "User was not found" });
           }
-          const validPassword = bcrypt.compareSync(password, rows[0].password);
+          const validPassword = bcrypt.compareSync(password, rows.password);
           if (!validPassword) {
             return cb(null, false, { message: "Incorrect password" });
           }
-          let user = rows[0];
+          let user = rows;
           await getUserIncomes(email).then(rows=>user.incomes=rows);
           await getUserSavings(email).then(rows=>user.savings=rows);
           await getUserSpends(email).then(rows=>user.spends=rows);
@@ -97,7 +97,7 @@ function loginAuthenticate(req, res, next) {
     if (refreshToken in refreshTokens && refreshTokens[refreshToken] === email) {
       getUserByEmail(email)
         .then((rows) => {
-          const token = jwt.sign({ user: rows[0] }, config.SECRET_KEY, {
+          const token = jwt.sign({ user: rows }, config.SECRET_KEY, {
             expiresIn: 60,
           });
           return res.json({ email: email, token: token });

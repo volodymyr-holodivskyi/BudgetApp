@@ -1,8 +1,8 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router,NavigationStart,NavigationEnd } from '@angular/router';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
-import { HttpService } from '../shared/services/http.service';
+import { HttpService } from '../shared/services/http-service/http.service';
 
 @Component({
   selector: 'app-login',
@@ -22,12 +22,12 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.toastr.overlayContainer=this.toastContainer;
-    localStorage.clear()
+    localStorage.clear();
   }
+  
+  login(){
 
-   login(){
-
-    this.httpService.login(this.loginForm.controls["email"].value,this.loginForm.controls["password"].value).subscribe(data=>{
+  this.httpService.login(this.loginForm.controls["email"].value,this.loginForm.controls["password"].value).subscribe(data=>{
       localStorage.setItem('name',data.user.firstName);
       localStorage.setItem('surname',data.user.lastName);
       localStorage.setItem('email',data.user.email);

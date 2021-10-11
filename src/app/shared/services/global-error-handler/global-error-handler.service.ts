@@ -1,6 +1,6 @@
 import { ErrorHandler, Injectable, Injector, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { NotifyService } from './notify.service';
+import { NotifyService } from '../notify-service/notify.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +12,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     const notifier = this.injector.get(NotifyService);
     const router = this.injector.get(Router);
     this.zone.run(() => {
-      if (error === 'Unauthorized') router.navigate(['/login']);
-
+      if (error === 'Unauthorized') router.navigate(['/login']);     
       if (typeof error !== 'string') {
         notifier.showMessage('error', error.message);
       }

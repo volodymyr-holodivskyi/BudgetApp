@@ -27,11 +27,11 @@ async function dbInit() {
       `create table if not exists users
     (
         firstName varchar(20) not null,
-        lastName varchar(20) not null,
+        lastName varchar(20) not null,  
         email varchar(30) not null primary key,
         password varchar(100) not null,
-        balance int not null,
-        expences int not null
+        balance double not null,
+        expences double not null
     )`
     )
     .then((res) => console.log(res))
@@ -42,7 +42,7 @@ async function dbInit() {
       `create table if not exists incomes(
       userEmail varchar(30),
       category varchar(20) not null,
-      value int not null,
+      value double not null,
       foreign key (userEmail) references users(email)
     )`
     )
@@ -53,7 +53,8 @@ async function dbInit() {
       `create table if not exists savings(
       userEmail varchar(30),
       category varchar(20) not null,
-      value int not null,
+      value double not null,
+      icon varchar(255),
       foreign key (userEmail) references users(email)
     )`
     )
@@ -64,7 +65,8 @@ async function dbInit() {
       `create table if not exists spends(
       userEmail varchar(30),
       category varchar(20) not null,
-      value int not null,
+      value double not null,
+      icon varchar(255),
       foreign key (userEmail) references users(email)
     )`
     )
@@ -76,7 +78,7 @@ async function dbInit() {
     (
         userEmail varchar(30),
         operationType enum('profit','costs') not null,
-        value int not null,
+        value double not null,
         operationDate datetime not null,
         foreign key (userEmail) references users(email)
     )`
@@ -92,7 +94,7 @@ async function dbInit() {
     values('admin','','admin@gmail.com','${bcrypt.hashSync(
       "admin",
       8
-    )}',9999999,99999),
+    )}',9999,9999),
           ('billy','jean','billyj@gmail.com','${bcrypt.hashSync(
             "12345",
             8
@@ -113,10 +115,9 @@ async function dbInit() {
       connection2
         .execute(
           `insert into incomes (userEmail,category,value)
-      values('admin@gmail.com','salary',500),
-      ('p_paskal@gmail.com','salary',500),
-      ('billyj@gmail.com','salary',500),
-      ('admin@gmail.com','bonus',300)`
+      values('admin@gmail.com','income',500),
+      ('p_paskal@gmail.com','income',500),
+      ('billyj@gmail.com','income',500)`
         )
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
@@ -127,13 +128,13 @@ async function dbInit() {
     if (rows.length === 0) {
       connection2
         .execute(
-          `insert into savings (userEmail,category,value)
-      values('admin@gmail.com','cash',500),
-      ('admin@gmail.com','bank',500),
-      ('billyj@gmail.com','cash',500),
-      ('billyj@gmail.com','bank',500),
-      ('p_paskal@gmail.com','cash',500),
-      ('p_paskal@gmail.com','bank',500)`
+          `insert into savings (userEmail,category,value,icon)
+      values('admin@gmail.com','cash',500,'money'),
+      ('admin@gmail.com','bank',500,'account_balance'),
+      ('billyj@gmail.com','cash',500,'money'),
+      ('billyj@gmail.com','bank',500,'account_balance'),
+      ('p_paskal@gmail.com','cash',500,'money'),
+      ('p_paskal@gmail.com','bank',500,'account_balance')`
         )
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
@@ -144,13 +145,13 @@ async function dbInit() {
     if (rows.length === 0) {
       connection2
         .execute(
-          `insert into spends (userEmail,category,value)
-      values('admin@gmail.com','girlfriend',500),
-      ('admin@gmail.com','food',500),
-      ('billyj@gmail.com','utilities',500),
-      ('billyj@gmail.com','food',500),
-      ('p_paskal@gmail.com','utilities',500),
-      ('p_paskal@gmail.com','food',500)`
+          `insert into spends (userEmail,category,value,icon)
+      values('admin@gmail.com','girlfriend',500,'female'),
+      ('admin@gmail.com','food',500,'restaurant'),
+      ('billyj@gmail.com','utilities',500,'receipt'),
+      ('billyj@gmail.com','food',500,'restaurant'),
+      ('p_paskal@gmail.com','utilities',500,'receipt'),
+      ('p_paskal@gmail.com','food',500,'restaurant')`
         )
         .then((res) => console.log(res))
         .catch((err) => console.log(err));

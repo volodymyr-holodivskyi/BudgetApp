@@ -1,8 +1,10 @@
 interface Payments{
   category:string;
   value:number;
+  icon:string;
 }
 export class User {
+    [key:string]:any;
     firstName: string;
     lastName:string;
     email: string;

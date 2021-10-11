@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { RouterModule } from '@angular/router';
 import { DialogComponent } from './dialog/dialog.component';
+import { MatIcon,MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 
@@ -13,7 +15,9 @@ import { DialogComponent } from './dialog/dialog.component';
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    MatIconModule,
+    MatMenuModule
   ],
   exports:[
     HeaderComponent,

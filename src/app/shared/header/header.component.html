@@ -1,11 +1,38 @@
 <header class="d-flex ">
     <div class="col-1">
         <div class="bg-teal px-3 d-flex justify-content-center align-items-center col-6 h-100">
-            <button class="btn" mat-icon-button [matMenuTriggerFor]="menu">
+            <button class="menu-trigger-btn" (click)="toggleMenu()">
                 <mat-icon class="cursor-pointer menu-icon">grid_view</mat-icon>
             </button>
-            <mat-menu #menu="matMenu">
-              </mat-menu>
+            <div class="menu" [@backdropTrigger]="showMenu?'open':'closed'"> 
+                <div class="menu-backdrop" (click)="closeMenu()" >
+                   
+                  
+                </div>
+              
+            </div>
+            <ul class="menu-list" [@menuTrigger]="showMenu?'open':'closed'" [@menuzIndex]="showMenu?'open':'closed'">
+                <li class="menu-item"  [routerLink]="['/main']">
+                    <mat-icon class="menu-item-icon">account_circle</mat-icon>
+                    <a class="menu-link">PROFILE</a>
+                </li>
+                <li class="menu-item"  [routerLink]="['/settings']">
+                    <mat-icon class="menu-item-icon">settings</mat-icon>
+                    <a class="menu-link">SETTINGS</a>
+                </li>
+                <li class="menu-item" [routerLink]="['/history']">
+                    <mat-icon class="menu-item-icon">history</mat-icon>
+                    <a class="menu-link">HISTORY</a>
+                </li>
+                <li class="menu-item" [routerLink]="['/statistic']">
+                    <mat-icon class="menu-item-icon">assessment</mat-icon>
+                    <a class="menu-link">STATISTIC</a>
+                </li>
+                <li class="menu-item"  [routerLink]="['/login']">
+                    <mat-icon class="menu-item-icon">logout</mat-icon>
+                    <a class="menu-link"><span class="mx-1">LOG</span> <span>OUT</span></a>
+                </li>
+            </ul>
         </div>
         <div class="col-6"></div>
     </div>

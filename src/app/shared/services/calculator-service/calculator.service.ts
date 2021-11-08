@@ -18,10 +18,8 @@ export class CalculatorService {
         case '*':return (parseFloat(arr[0])*parseFloat(arr[1])).toPrecision(2);
         case '/':return (parseFloat(arr[0])/parseFloat(arr[1])).toPrecision(2);
       }
-    }
-    
-    
+    }  
     return parseFloat(arr[0]).toPrecision(2);
-    
   }
+  
 }

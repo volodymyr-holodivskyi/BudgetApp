@@ -3,9 +3,6 @@ const authRouter = express.Router();
 
 const { loginAuthenticate, generateToken } = require("../controllers/auth-controller");
 
-
-
-/* POST login. */
 authRouter.post("/", loginAuthenticate);
 authRouter.post("/token", generateToken);
 

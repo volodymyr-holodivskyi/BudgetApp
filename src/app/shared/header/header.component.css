@@ -25,3 +25,60 @@ mat-icon{
 button{
     line-height: 100%;
 }
+button:focus{
+    outline: none;
+    border: none;
+}
+.menu{
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    
+}
+.menu-backdrop{
+    background-color: rgba(0, 0, 0, 0.418);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.menu-list{
+    background-color: white;
+    height: 80%;
+    position: absolute;
+    top: 5%;
+    left: 0;
+    list-style: none;
+}
+.menu-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #20c997;
+    width: 75%;
+    padding:5px;
+    margin: 1rem 0;
+    cursor: pointer;
+}
+.menu-item:hover{
+    background-color: rgb(190, 190, 190);
+}
+.menu-item-icon{
+    color: slategray;
+}
+.menu-link{
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(97, 97, 97);
+    cursor: pointer;
+}
+.menu-trigger-btn{
+    border: none;
+    background: #20c997;
+}
+.z-1000{
+    z-index: 1000;
+}

@@ -16,14 +16,22 @@ import { GlobalErrorHandler } from './shared/services/global-error-handler/globa
 import { HttpInterceptorService } from './shared/services/http-interceptor/http-interceptor.service';
 import { SharedModule } from './shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu'
+import { MatMenuModule } from '@angular/material/menu';
+import { SettingsComponent } from './settings/settings.component';
+import { SettingsModule } from './settings/settings.module';
+import { StatisticComponent } from './statistic/statistic.component';
+import { StatisticModule } from './statistic/statistic.module';
+import { HistoryComponent } from './history/history.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MainPageComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    SettingsComponent,
+    StatisticComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +46,7 @@ import { MatMenuModule } from '@angular/material/menu'
     MatDialogModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
   ],
   providers: [
     {

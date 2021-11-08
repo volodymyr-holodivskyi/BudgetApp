@@ -46,7 +46,7 @@ async function moveSavingsIntoSpends(req, res) {
 }
 
 function getUserInfo(req,res){
-    let urlRequest=url.parse(req.url, true);
+    const urlRequest=url.parse(req.url, true);
     const email = urlRequest.query.email;
     return getUserByEmail(email)
     .then(async (rows) => {

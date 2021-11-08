@@ -11,6 +11,8 @@ import { map } from 'rxjs/operators';
 
 import { loginData } from '../../models/loginData';
 import { Router } from '@angular/router';
+import { StatisticField } from '../../models/statistic';
+import { DateService } from '../date-service/date.service';
 
 
 @Injectable({
@@ -18,7 +20,7 @@ import { Router } from '@angular/router';
 })
 export class HttpService {
 
-  constructor(private http:HttpClient,private router:Router) { }
+  constructor(private http:HttpClient,private router:Router,private dateService:DateService) { }
 
   login(email: string, password: string): Observable<loginData> {
     const body = {
@@ -100,4 +102,59 @@ export class HttpService {
       })
     )
   }
+
+  getUserStats(email:string|null):Observable<StatisticField[]>{
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + localStorage.getItem('token')
+    );
+    const params=new HttpParams().set(
+      'email',<string>email
+    );
+    return this.http.get('http://127.0.0.1:3000/stats',{headers:headers,params:params}).pipe(
+      map((data:any)=>{
+        data.map((e:StatisticField)=>{   
+          e.date=this.dateService.transformDate(e.date);    
+          return new StatisticField(e.category,e.value,e.date);
+        })
+        
+        return data;
+        
+        
+      })
+    )
+  }
+
+  getUserHistory(email:string|null){
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + localStorage.getItem('token')
+    );
+    const params=new HttpParams().set(
+      'email',<string>email
+    );
+    return this.http.get('http://127.0.0.1:3000/history',{headers:headers,params:params}).pipe(
+      map((data:any)=>{
+        
+        return data;
+      })
+    )
+  }
+
+  getUserSettings(email:string|null){
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + localStorage.getItem('token')
+    );
+    const params=new HttpParams().set(
+      'email',<string>email
+    );
+    return this.http.get('http://127.0.0.1:3000/settings',{headers:headers,params:params}).pipe(
+      map((data:any)=>{
+        
+        return data;
+      })
+    )
+  }
 }
+

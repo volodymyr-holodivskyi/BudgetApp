@@ -1,0 +1,10 @@
+.user-field{
+    display: flex;
+}
+.edit-icon{
+    opacity: 0;
+    cursor: pointer;
+}
+.user-field:hover>.edit-icon{
+    opacity: 1;
+}

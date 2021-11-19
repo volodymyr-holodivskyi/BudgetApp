@@ -31,13 +31,14 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('name',data.user.firstName);
       localStorage.setItem('surname',data.user.lastName);
       localStorage.setItem('email',data.user.email);
+      localStorage.setItem('id',data.user.id);
       localStorage.setItem('balance',data.user.balance.toString());
       localStorage.setItem('expences',data.user.expences.toString());
       localStorage.setItem('token',data.token);
       localStorage.setItem('refreshToken',data.refreshToken);
-      localStorage.setItem('incomes',JSON.stringify(data.user.incomes))
-      localStorage.setItem('savings',JSON.stringify(data.user.savings))
-      localStorage.setItem('spends',JSON.stringify(data.user.spends))
+      localStorage.setItem('incomes',JSON.stringify(data.user.incomes));
+      localStorage.setItem('savings',JSON.stringify(data.user.savings));
+      localStorage.setItem('spends',JSON.stringify(data.user.spends));
       this.router.navigate(["/main"])
     })
     

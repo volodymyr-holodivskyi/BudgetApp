@@ -3,11 +3,20 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { CalculatorService } from '../services/calculator-service/calculator.service';
 import { HttpService } from '../services/http-service/http.service';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 interface buttonStyles {
   value: string;
   styles: string;
   icon?: string;
+}
+
+interface Patterns{
+  [key:string]:RegExp;
+}
+
+interface InputTips{
+  [key:string]:string;
 }
 @Component({
   selector: 'app-dialog',
@@ -19,18 +28,33 @@ export class DialogComponent implements OnInit{
   toastContainer: ToastContainerDirective | undefined;
   availableSymbols: RegExp = /[0-9\/\*\+\-\.]/;
   operators: RegExp = /[\/\*\+\-]/;
-  
+  editForm:FormGroup;
+  public isCorrectPassword:boolean=false;
+  public editFieldValue:string|undefined;
+  public patterns:Patterns={
+    "balance":/^[0-9]+\.?[0-9]{0,2}$/,
+    "email":/^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+  }
+  inputTips:InputTips={
+    "balance":"Balance should be positive digit with two float numbers",
+     "email":"Email example email@example.com"
+  }
   public confirmMessage: string | undefined;
+  public tipMessage:string|undefined;
+  public showEditConfirm: boolean | undefined;
   public showCalc: boolean | undefined;
-  public userEmail: string | undefined;
+  public userId: string | undefined;
   public validValue: number | undefined;
   public source: string | undefined;
   public sourceCategory: string | undefined;
   public target: string | undefined;
   public targetCategory: string | undefined;
+  public editCategoryName: string='';
+  
   @ViewChild('screenContent') screenContent: ElementRef;
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
+    if(!this.showCalc) return;
     if (!this.availableSymbols.test(event.key)) {
       
       
@@ -71,15 +95,22 @@ export class DialogComponent implements OnInit{
     private elementRef: ElementRef,
     private calculator: CalculatorService,
     private http: HttpService,
-    private toastr:ToastrService
+    private toastr:ToastrService,
+    private formBuilder:FormBuilder
   ) {
     this.screenContent =
       this.elementRef.nativeElement.querySelector('.screenContent');
-      
+      this.editForm=formBuilder.group({
+        "editField":[""]
+      })
+
   }
   ngOnInit(){
     this.toastr.overlayContainer=this.toastContainer;
-  }
+    this.isCorrectPassword=false;  
+    this.editForm.controls['editField'].setValidators(Validators.pattern(this.patterns[this.editCategoryName]));
+    
+  }  
 
   changeContent(value: string) {
     if (value === 'AC') {
@@ -150,13 +181,13 @@ export class DialogComponent implements OnInit{
     if (!this.operators.test(this.screenContent.nativeElement.innerHTML)) {
       this.target === 'savings'
         ?this.http.moveIncomeInSavings(
-            <string>this.userEmail,
+            <string>this.userId,
             this.sourceCategory,
             this.targetCategory,
             parseFloat(this.screenContent.nativeElement.innerHTML)
           ).toPromise().then(data=>this.dialogRef.close(true))
         :this.http.moveSavingInSpends(
-            <string>this.userEmail,
+            <string>this.userId,
             this.sourceCategory,
             this.targetCategory,
             parseFloat(this.screenContent.nativeElement.innerHTML)
@@ -173,5 +204,20 @@ export class DialogComponent implements OnInit{
     this.screenContent.nativeElement.innerHTML =
       this.screenContent.nativeElement.innerHTML.slice(0, -1);
     return;
+  }
+  sendPassword(password:string){
+     this.http.sendPassword(localStorage.getItem('id'),password).subscribe(data=>{
+      if(data.message==='OK'){
+        
+        this.isCorrectPassword=true;
+        
+        
+      } 
+    });
+  }
+  editProfileField(category:string,value:string){
+    if(!value) return;
+    this.editFieldValue=value;   
+    this.dialogRef.close(true);
   }
 }

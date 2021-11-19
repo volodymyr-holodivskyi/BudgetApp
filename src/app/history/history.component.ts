@@ -9,9 +9,9 @@ import { HttpService } from '../shared/services/http-service/http.service';
 })
 export class HistoryComponent implements OnInit {
 
-  user:User=new User('','','','',0,0,[],[],[]);
-  userEmail = <string>localStorage.getItem('email');
-  getUserInfo=this.httpService.getUserInfo(this.userEmail);
+  user:User=new User('','','','','',0,0,'','',[],[],[]);
+  userId = <string>localStorage.getItem('id');
+  getUserInfo=this.httpService.getUserInfo(this.userId);
   userRefreshToken = localStorage.getItem('refreshToken');
   constructor(private httpService:HttpService) { }
 
@@ -19,13 +19,13 @@ export class HistoryComponent implements OnInit {
     this.getUserInfo.subscribe(data=>{
       this.user=data; 
     });
-    this.httpService.getUserHistory(this.userEmail).subscribe(data=>{
+    this.httpService.getUserHistory(this.userId).subscribe(data=>{
       console.log(data);
       
     })
-    this.httpService.getToken(this.userEmail, this.userRefreshToken)?.subscribe();
+    this.httpService.getToken(this.userId, this.userRefreshToken)?.subscribe();
     setInterval(() => {
-      this.httpService.getToken(this.userEmail, this.userRefreshToken)?.subscribe();
+      this.httpService.getToken(this.userId, this.userRefreshToken)?.subscribe();
     }, 30000);
   }
 }

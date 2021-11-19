@@ -16,7 +16,7 @@ async function getUserStatistic(email){
     .catch((err) => err);
     
 }
-String.prototype
+
 module.exports={
     getUserStatistic
 }

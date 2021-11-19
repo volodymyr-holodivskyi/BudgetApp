@@ -16,6 +16,6 @@ export class MainPageResolver implements Resolve<User> {
   constructor(private http:HttpService){}
  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<User> |Promise<User> | User{
 
-    return this.http.getUserInfo(localStorage.getItem('email'));
+    return this.http.getUserInfo(localStorage.getItem('id'));
   }
 }

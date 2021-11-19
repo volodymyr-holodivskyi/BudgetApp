@@ -26,12 +26,15 @@ async function dbInit() {
     .execute(
       `create table if not exists users
     (
+        id int auto_increment primary key,
         firstName varchar(20) not null,
         lastName varchar(20) not null,  
-        email varchar(30) not null primary key,
+        email varchar(30) not null unique,
         password varchar(100) not null,
         balance double not null,
-        expences double not null
+        expences double not null,
+        lastVisitDate datetime not null,
+        avatar varchar(100) 
     )`
     )
     .then((res) => console.log(res))
@@ -40,11 +43,11 @@ async function dbInit() {
   await connection2
     .execute(
       `create table if not exists incomes(
-      userEmail varchar(30),
+      userId int,
       category varchar(20) not null,
       value double not null,
       date datetime not null,
-      foreign key (userEmail) references users(email)
+      foreign key (userId) references users(id)
     )`
     )
     .then((res) => console.log(res))
@@ -52,11 +55,11 @@ async function dbInit() {
   await connection2
     .execute(
       `create table if not exists savings(
-      userEmail varchar(30),
+      userId int,
       category varchar(20) not null,
       value double not null,
       icon varchar(255),
-      foreign key (userEmail) references users(email)
+      foreign key (userId) references users(id)
     )`
     )
     .then((res) => console.log(res))
@@ -64,12 +67,12 @@ async function dbInit() {
   await connection2
     .execute(
       `create table if not exists spends(
-      userEmail varchar(30),
+      userId int,
       category varchar(20) not null,
       value double not null,
       icon varchar(255),
       date datetime not null,
-      foreign key (userEmail) references users(email)
+      foreign key (userId) references users(id)
     )`
     )
     .then((res) => console.log(res))
@@ -78,14 +81,14 @@ async function dbInit() {
     .execute(
       `create table if not exists history
     (
-        userEmail varchar(30),
+        userId int,
         source enum('incomes','savings') not null,
         target enum('spends','savings') not null,
         sourceCategory varchar(20),
         targetCategory varchar(20) not null,
         value double not null,
         operationDate datetime not null,
-        foreign key (userEmail) references users(email)
+        foreign key (userId) references users(id)
     )`
     )
     .then((res) => console.log(res))
@@ -94,10 +97,10 @@ async function dbInit() {
   await connection2
     .execute(
       `create table if not exists settings (
-    userEmail varchar(30),
+    userId int,
     language varchar(15),
     currencyCode varchar(3),
-    foreign key (userEmail) references users(email)
+    foreign key (userId) references users(id)
   )`
     )
     .then((res) => console.log(res))
@@ -107,19 +110,19 @@ async function dbInit() {
     if (rows.length === 0) {
       connection2
         .execute(
-          `insert into users (firstName,lastName,email,password,balance,expences)
+          `insert into users (firstName,lastName,email,password,balance,expences,lastVisitDate)
     values('admin','','admin@gmail.com','${bcrypt.hashSync(
       "admin",
       8
-    )}',9999,9999),
+    )}',9999,9999,'2021-10-01 12:00:00'),
           ('billy','jean','billyj@gmail.com','${bcrypt.hashSync(
             "12345",
             8
-          )}',10000,1000),
+          )}',10000,1000,'2021-10-01 12:00:00'),
           ('pedro','paskal','p_paskal@gmail.com','${bcrypt.hashSync(
             "qwezxc",
             8
-          )}',25000,2000)
+          )}',25000,2000,'2021-10-01 12:00:00')
           `
         )
         .then((res) => console.log(res))
@@ -131,10 +134,10 @@ async function dbInit() {
     if (rows.length === 0) {
       connection2
         .execute(
-          `insert into incomes (userEmail,category,value,date)
-      values('admin@gmail.com','income',500,'2021-10-01 12:00:00'),
-      ('p_paskal@gmail.com','income',500,'2021-10-01 12:00:00'),
-      ('billyj@gmail.com','income',500,'2021-10-01 12:00:00')`
+          `insert into incomes (userId,category,value,date)
+      values(1,'income',500,'2021-10-01 12:00:00'),
+      (2,'income',500,'2021-10-01 12:00:00'),
+      (3,'income',500,'2021-10-01 12:00:00')`
         )
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
@@ -145,13 +148,13 @@ async function dbInit() {
     if (rows.length === 0) {
       connection2
         .execute(
-          `insert into savings (userEmail,category,value,icon)
-      values('admin@gmail.com','cash',500,'money'),
-      ('admin@gmail.com','bank',500,'account_balance'),
-      ('billyj@gmail.com','cash',500,'money'),
-      ('billyj@gmail.com','bank',500,'account_balance'),
-      ('p_paskal@gmail.com','cash',500,'money'),
-      ('p_paskal@gmail.com','bank',500,'account_balance')`
+          `insert into savings (userId,category,value,icon)
+      values(1,'cash',500,'money'),
+      (1,'bank',500,'account_balance'),
+      (2,'cash',500,'money'),
+      (2,'bank',500,'account_balance'),
+      (3,'cash',500,'money'),
+      (3,'bank',500,'account_balance')`
         )
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
@@ -162,13 +165,13 @@ async function dbInit() {
     if (rows.length === 0) {
       connection2
         .execute(
-          `insert into spends (userEmail,category,value,icon,date)
-      values('admin@gmail.com','girlfriend',500,'female','2021-10-01 12:00:00'),
-      ('admin@gmail.com','food',500,'restaurant','2021-10-01 12:00:00'),
-      ('billyj@gmail.com','utilities',500,'receipt','2021-10-01 12:00:00'),
-      ('billyj@gmail.com','food',500,'restaurant','2021-10-01 12:00:00'),
-      ('p_paskal@gmail.com','utilities',500,'receipt','2021-10-01 12:00:00'),
-      ('p_paskal@gmail.com','food',500,'restaurant','2021-10-01 12:00:00')`
+          `insert into spends (userId,category,value,icon,date)
+      values(1,'girlfriend',500,'female','2021-10-01 12:00:00'),
+      (1,'food',500,'restaurant','2021-10-01 12:00:00'),
+      (2,'utilities',500,'receipt','2021-10-01 12:00:00'),
+      (2,'food',500,'restaurant','2021-10-01 12:00:00'),
+      (3,'utilities',500,'receipt','2021-10-01 12:00:00'),
+      (3,'food',500,'restaurant','2021-10-01 12:00:00')`
         )
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
@@ -176,17 +179,17 @@ async function dbInit() {
   });
   connection2.execute(`select * from history`).then(([rows, fields]) => {
     if (rows.length === 0) {
-      connection2.execute(`insert into history (userEmail,source,target,sourceCategory,targetCategory,value,operationDate)
-      values ('admin@gmail.com','incomes','savings','','bank',1,'2021-10-23 19:27:54'),
-      ('admin@gmail.com','savings','spends','bank','food',27,'2021-10-23 19:29:31'),
-      ('admin@gmail.com','savings','spends','cash','girlfriend',54,'2021-10-23 19:31:14')
+      connection2.execute(`insert into history (userId,source,target,sourceCategory,targetCategory,value,operationDate)
+      values (1,'incomes','savings','','bank',1,'2021-10-23 19:27:54'),
+      (1,'savings','spends','bank','food',27,'2021-10-23 19:29:31'),
+      (1,'savings','spends','cash','girlfriend',54,'2021-10-23 19:31:14')
       `);
     }
   });
   connection2.execute(`select * from settings`).then(([rows, fields]) => {
     if (rows.length === 0) {
-      connection2.execute(`insert into settings (userEmail,language,currencyCode)
-      values ('admin@gmail.com','english','USD')`);
+      connection2.execute(`insert into settings (userId,language,currencyCode)
+      values (1,'english','USD')`);
     }
   });
 }

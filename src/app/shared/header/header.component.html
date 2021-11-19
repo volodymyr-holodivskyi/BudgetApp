@@ -13,12 +13,12 @@
             </div>
             <ul class="menu-list" [@menuTrigger]="showMenu?'open':'closed'" [@menuzIndex]="showMenu?'open':'closed'">
                 <li class="menu-item"  [routerLink]="['/main']">
+                    <mat-icon class="menu-item-icon">home</mat-icon>
+                    <a class="menu-link">MAIN</a>
+                </li>
+                <li class="menu-item"  [routerLink]="['/profile']">
                     <mat-icon class="menu-item-icon">account_circle</mat-icon>
                     <a class="menu-link">PROFILE</a>
-                </li>
-                <li class="menu-item"  [routerLink]="['/settings']">
-                    <mat-icon class="menu-item-icon">settings</mat-icon>
-                    <a class="menu-link">SETTINGS</a>
                 </li>
                 <li class="menu-item" [routerLink]="['/history']">
                     <mat-icon class="menu-item-icon">history</mat-icon>

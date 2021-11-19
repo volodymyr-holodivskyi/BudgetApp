@@ -1,8 +1,10 @@
-<h1 mat-dialog-title class="modal-header justify-content-end">
-  <button mat-button class="btn btn-danger" *ngIf="showCalc" (click)="dialogRef.close(false)">
+<div class="d-flex justify-content-end">
+  <button mat-button class="btn btn-danger" (click)="dialogRef.close(false)">
     X
   </button>
-</h1>
+</div>
+ 
+
 <div mat-dialog-content *ngIf="showCalc" class="modal-body">
   <div class="calculator">
     <div #screenContent class="screenContent mb-5"></div>
@@ -10,10 +12,32 @@
 </div>
 <div class="d-flex justify-content-center"><div toastContainer></div></div>
 </div>
+<div mat-dialog-content *ngIf="showEditConfirm" class="modal-body">
+  <div *ngIf="!isCorrectPassword">
+    <div class="text-center fs-5 my-3" >{{ confirmMessage }}</div>
+    <div >
+      <input type="password" #password class="form-control my-3">
+      <div [hidden]="editCategoryName!=='password'">
+        <div>Please repeat your password</div>
+        <input type="password" #passwords class="form-control my-3">
+      </div>
+      <div class="d-flex justify-content-center">
+        <button class="btn btn-outline-primary" [disabled]='!password.value' (click)="sendPassword(password.value)">Enter</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isCorrectPassword">
+    <form  [formGroup]="editForm">
+      <div class="text-center fs-5 my-3" >{{ tipMessage }}</div>
+      <input type="text" formControlName="editField" class="form-control my-3">
+      <div *ngIf="editForm.controls['editField'].invalid" class="alert alert-warning" role="alert">
+        {{inputTips[editCategoryName]}}
+      </div>
+      <div class="d-flex justify-content-center">
+        <button class="btn btn-outline-primary" [disabled]='editForm.controls["editField"].invalid' (click)="editProfileField(editCategoryName,editForm.controls['editField'].value)">Enter</button>
+      </div>
+  </form>
+  </div>
+ 
+<div mat-dialog-content *ngIf="!showCalc&&!showEditConfirm" class="modal-body text-center fs-5">{{ confirmMessage }}</div>
 
-<div mat-dialog-content *ngIf="!showCalc" class="modal-body text-center fs-5">{{ confirmMessage }}</div>
-<div mat-dialog-actions *ngIf="!showCalc" class="modal-footer justify-content-center">
-  <button mat-button class="btn btn-danger" (click)="dialogRef.close(false)">
-    Close
-  </button>
-</div>

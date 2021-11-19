@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const LocalStrategy = require("passport-local").Strategy;
 const JWTStrategy = passportJWT.Strategy;
 
-const { getUserByEmail, getUserIncomes, getUserSavings, getUserSpends } = require("../services/users-service");
+const { getUserByEmail, getUserIncomes, getUserSavings, getUserSpends, getUserById, updateUserLastVisitDate } = require("../services/users-service");
 const config = require("../config");
 
 passport.serializeUser(function (user, done) {
@@ -36,9 +36,9 @@ passport.use(
             return cb(null, false, { message: "Incorrect password" });
           }
           let user = rows;
-          await getUserIncomes(email).then(rows=>user.incomes=rows);
-          await getUserSavings(email).then(rows=>user.savings=rows);
-          await getUserSpends(email).then(rows=>user.spends=rows);
+          await getUserIncomes(user.id).then(rows=>user.incomes=rows);
+          await getUserSavings(user.id).then(rows=>user.savings=rows);
+          await getUserSpends(user.id).then(rows=>user.spends=rows);
           return cb(null, user, {
             message: "Logged In Successfully",
           });
@@ -76,7 +76,7 @@ function loginAuthenticate(req, res, next) {
         });
       }
   
-      req.login(user, { session: false }, (err) => {
+      req.login(user, { session: false },async (err) => {
         if (err) {
           res.send(err);
         }
@@ -85,22 +85,23 @@ function loginAuthenticate(req, res, next) {
           expiresIn: 60,
         });
         let refreshToken = randToken.uid(256);
-        refreshTokens[refreshToken] = user.email;
+        refreshTokens[refreshToken] = user.id;
+        await updateUserLastVisitDate(user.id).then(data=>user.lastVisitDate=data);
         return res.json({ user: user, token: token, refreshToken: refreshToken });
       });
     })(req, res);
   }
  
   function generateToken(req, res, next) {
-    const email = req.body.email;
+    const id = +req.body.id;
     const refreshToken = req.body.refreshToken;
-    if (refreshToken in refreshTokens && refreshTokens[refreshToken] === email) {
-      getUserByEmail(email)
+    if (refreshToken in refreshTokens && refreshTokens[refreshToken] === id) {
+      getUserById(id)
         .then((rows) => {
           const token = jwt.sign({ user: rows }, config.SECRET_KEY, {
             expiresIn: 60,
           });
-          return res.json({ email: email, token: token });
+          return res.json({ token: token });
         })
         .catch((err) => res.status(401).json({ message: "Unauthorized" }));
     } else {

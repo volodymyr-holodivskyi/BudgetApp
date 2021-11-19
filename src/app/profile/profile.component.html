@@ -1,0 +1,44 @@
+<app-header [user]='user'></app-header>
+<div class="container">
+    <div>
+        <div class="d-flex py-3">
+            <div class="user-field">
+                <div>
+                 {{user.firstName}}
+                </div> 
+                <mat-icon class="edit-icon" (click)="openConfirmationDialog('firstName')">edit</mat-icon>
+             </div>
+             <div class="user-field">
+                <div>
+                 {{user.lastName}}
+                </div> 
+                <mat-icon class="edit-icon" (click)="openConfirmationDialog('lastName')">edit</mat-icon>
+             </div>
+        </div> 
+         <div class="user-field py-3">
+           <div> 
+             {{user.balance}}
+         </div>
+         <mat-icon class="edit-icon" (click)="openConfirmationDialog('balance')">edit</mat-icon>
+         </div>
+         <div class="user-field py-3">
+             <div>
+                 {{user.email}}
+             </div>
+             <mat-icon class="edit-icon" (click)="openConfirmationDialog('email')">edit</mat-icon>
+         </div>
+         <div class="user-field py-3">
+             <div>
+                 {{user.lastVisitDate}}
+             </div>
+         </div>
+         <div class="py-3">
+            <button (click)="openConfirmationDialog('password')">Change password</button>
+         </div>
+    </div>
+    <div>
+        <button (click)="saveEdit()">Save</button>
+        <button (click)="cancelEdit()">Cancel</button>
+    </div>
+</div>
+

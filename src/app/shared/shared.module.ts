@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { DialogComponent } from './dialog/dialog.component';
 import { MatIcon,MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -17,7 +18,8 @@ import { MatMenuModule } from '@angular/material/menu';
     CommonModule,
     RouterModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    ReactiveFormsModule,
   ],
   exports:[
     HeaderComponent,

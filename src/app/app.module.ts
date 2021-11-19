@@ -17,8 +17,8 @@ import { HttpInterceptorService } from './shared/services/http-interceptor/http-
 import { SharedModule } from './shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { SettingsComponent } from './settings/settings.component';
-import { SettingsModule } from './settings/settings.module';
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileModule } from './profile/profile.module';
 import { StatisticComponent } from './statistic/statistic.component';
 import { StatisticModule } from './statistic/statistic.module';
 import { HistoryComponent } from './history/history.component'
@@ -29,7 +29,7 @@ import { HistoryComponent } from './history/history.component'
     LoginComponent,
     MainPageComponent,
     NotFoundComponent,
-    SettingsComponent,
+    ProfileComponent,
     StatisticComponent,
     HistoryComponent
   ],

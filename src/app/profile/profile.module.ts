@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SettingsComponent } from './settings.component';
+import { ProfileComponent } from './profile.component';
 import { RouterModule } from '@angular/router';
 
 
@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
   declarations: [],
   imports: [
     CommonModule,
-    RouterModule.forChild([{path:'',component:SettingsComponent}])
+    RouterModule.forChild([{path:'',component:ProfileComponent}])
   ]
 })
-export class SettingsModule { }
+export class ProfileModule { }

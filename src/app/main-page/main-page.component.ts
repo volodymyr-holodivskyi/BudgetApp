@@ -15,12 +15,12 @@ interface IOperations<T> {
   styleUrls: ['./main-page.component.css'],
 })
 export class MainPageComponent implements OnInit {
-  user:User=new User('','','','',0,0,[],[],[]);
-  userEmail = <string>localStorage.getItem('email');
+  user:User=new User('','','','','',0,0,'','',[],[],[]);
+  userId = <string>localStorage.getItem('id');
   userRefreshToken = localStorage.getItem('refreshToken');
   
   isLoader:boolean|undefined;
-  getUserInfo=this.httpService.getUserInfo(this.userEmail)
+  getUserInfo=this.httpService.getUserInfo(this.userId);
   dialogRef?: MatDialogRef<DialogComponent>;
   userInfo: IOperations<any> = {
     incomes: null,
@@ -60,9 +60,9 @@ export class MainPageComponent implements OnInit {
     
     
     
-    this.httpService.getToken(this.userEmail, this.userRefreshToken)?.subscribe();
+    this.httpService.getToken(this.userId, this.userRefreshToken)?.subscribe();
     setInterval(() => {
-      this.httpService.getToken(this.userEmail, this.userRefreshToken)?.subscribe();
+      this.httpService.getToken(this.userId, this.userRefreshToken)?.subscribe();
     }, 30000);
   }
 
@@ -84,7 +84,7 @@ export class MainPageComponent implements OnInit {
         }
       }
     }
-    this.dialogRef.componentInstance.userEmail=this.user.email
+    this.dialogRef.componentInstance.userId=this.user.id
     this.dialogRef.componentInstance.target=source;
     this.dialogRef.componentInstance.targetCategory=this.user[source][index].category;
     this.dialogRef.componentInstance.showCalc=true;

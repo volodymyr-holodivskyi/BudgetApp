@@ -58,7 +58,7 @@ import { User } from '../models/user';
 })
 export class HeaderComponent implements OnInit {
  
-  @Input()user:User=new User('','','','',0,0,[],[],[]);
+  @Input()user:User=new User('','','','','',0,0,'','',[],[],[]);
   showMenu:boolean=false;
   currentDate:string=new Date().toLocaleDateString('ru-RU')
   constructor() { }

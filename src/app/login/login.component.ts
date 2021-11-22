@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router,NavigationStart,NavigationEnd } from '@angular/router';
+import { Router,NavigationStart,NavigationEnd, ActivatedRoute } from '@angular/router';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { HttpService } from '../shared/services/http-service/http.service';
 
@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
   @ViewChild(ToastContainerDirective, { static: true })
   toastContainer: ToastContainerDirective | undefined;
   loginForm:FormGroup;
-  constructor(private router:Router,private httpService:HttpService,private toastr:ToastrService,private formBuilder:FormBuilder) {
+  constructor(private router:Router,private httpService:HttpService,private toastr:ToastrService,private formBuilder:FormBuilder,private route:ActivatedRoute) {
     this.loginForm=formBuilder.group({
       "email":["",[Validators.required,Validators.email]],
       "password":["",[Validators.required]]
@@ -39,7 +39,8 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('incomes',JSON.stringify(data.user.incomes));
       localStorage.setItem('savings',JSON.stringify(data.user.savings));
       localStorage.setItem('spends',JSON.stringify(data.user.spends));
-      this.router.navigate(["/main"])
+      this.router.navigate(["/main"]);
+      
     })
     
   }

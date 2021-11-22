@@ -2,6 +2,7 @@ interface Payments{
   category:string;
   value:number;
   icon:string;
+  date:string;
 }
 export class User {
     [key:string]:any;

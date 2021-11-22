@@ -1,5 +1,7 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { DialogComponent } from '../shared/dialog/dialog.component';
 import { User } from '../shared/models/user';
 import { HttpService } from '../shared/services/http-service/http.service';
@@ -15,7 +17,7 @@ export class ProfileComponent implements OnInit {
   getUserInfo=this.httpService.getUserInfo(this.userId);
   userRefreshToken = localStorage.getItem('refreshToken');
   dialogRef?: MatDialogRef<DialogComponent>;
-  constructor(private httpService:HttpService,private dialog:MatDialog) { }
+  constructor(private httpService:HttpService,private dialog:MatDialog,private location:Location) { }
 
   ngOnInit(): void {
     this.getUserInfo.subscribe(data=>{
@@ -109,5 +111,10 @@ export class ProfileComponent implements OnInit {
     
   this.user.lastVisitDate=tmpDate.reverse().join('.')+' '+tmpTime;
     });
+  }
+
+  goBack(){
+    this.location.back();
+    
   }
 }

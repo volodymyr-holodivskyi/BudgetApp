@@ -166,8 +166,16 @@ async function dbInit() {
       connection2
         .execute(
           `insert into spends (userId,category,value,icon,date)
-      values(1,'girlfriend',500,'female','2021-10-01 12:00:00'),
-      (1,'food',500,'restaurant','2021-10-01 12:00:00'),
+      values(1,'girlfriend',500,'female','2021-11-01 12:00:00'),
+      (1,'food',500,'restaurant','2021-11-01 12:00:00'),
+      (1,'girlfriend',400,'female','2021-10-01 12:00:00'),
+      (1,'food',300,'restaurant','2021-10-01 12:00:00'),
+      (1,'girlfriend',200,'female','2021-09-01 12:00:00'),
+      (1,'food',400,'restaurant','2021-09-01 12:00:00'),
+      (1,'girlfriend',500,'female','2021-08-01 12:00:00'),
+      (1,'food',400,'restaurant','2021-08-01 12:00:00'),
+      (1,'girlfriend',300,'female','2021-07-01 12:00:00'),
+      (1,'food',500,'restaurant','2021-07-01 12:00:00'),
       (2,'utilities',500,'receipt','2021-10-01 12:00:00'),
       (2,'food',500,'restaurant','2021-10-01 12:00:00'),
       (3,'utilities',500,'receipt','2021-10-01 12:00:00'),

@@ -92,8 +92,12 @@ async function updateUserProfile(req,res){
     let user=rows;
     for (const key in user) {
       if (Object.hasOwnProperty.call(user, key)) {
-        if(user[key]!==userData[key]){
-          await updateUserField(id,key,userData[key]);
+        if(user[key]!==userData[key]&&key!=='lastVisitDate'){
+         
+          //if(key==='balance')userData[key]=parseFloat(userData[key]);
+          
+          
+          updateUserField(id,key,userData[key]);
         }
         
       }
@@ -101,7 +105,6 @@ async function updateUserProfile(req,res){
     
   })
   return getUserById(id).then(user=>{
-    console.log(user);
     return res.status(200).json({ user: user })
   })
   .catch((err) => res.status(400).json({ message: err }));

@@ -44,7 +44,7 @@ function getUserSavingValue(id,category){
 
 function getUserSpends(id) {
   return connection
-    .execute(`select category,value,icon from spends where userId='${id}'`)
+    .execute(`select category,value,icon,date from spends where userId='${id}'`)
     .then(([rows, fields]) => rows)
     .catch((err) => err);
 }

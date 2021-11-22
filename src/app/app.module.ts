@@ -1,6 +1,6 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {} from '@angular/compiler';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import {MatButtonModule} from '@angular/material/button';
 import { LoginComponent } from './login/login.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -21,7 +22,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { ProfileModule } from './profile/profile.module';
 import { StatisticComponent } from './statistic/statistic.component';
 import { StatisticModule } from './statistic/statistic.module';
-import { HistoryComponent } from './history/history.component'
+import { HistoryComponent } from './history/history.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,7 @@ import { HistoryComponent } from './history/history.component'
     NotFoundComponent,
     ProfileComponent,
     StatisticComponent,
-    HistoryComponent
+    HistoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +48,10 @@ import { HistoryComponent } from './history/history.component'
     MatDialogModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    MatMenuModule,
+    MatMenuModule, 
+    MatButtonModule, ChartsModule,
+    
+    
   ],
   providers: [
     {
@@ -56,6 +61,7 @@ import { HistoryComponent } from './history/history.component'
     },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
+    
   ],
   bootstrap: [AppComponent]
 })

@@ -115,7 +115,7 @@ export class HttpService {
     return this.http.get('http://127.0.0.1:3000/stats',{headers:headers,params:params}).pipe(
       map((data:any)=>{
         data.map((e:StatisticField)=>{   
-          e.date=this.dateService.transformDate(e.date);    
+          e.date=this.dateService.getMonth(e.date).toString();    
           return new StatisticField(e.category,e.value,e.date);
         })
         

@@ -6,13 +6,17 @@ import { DialogComponent } from './dialog/dialog.component';
 import { MatIcon,MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DynamicChartComponent } from './dymamic-chart/dymamic-chart.component';
+import { ChartsModule } from 'ng2-charts';
+
 
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    DialogComponent
+    DialogComponent,
+    DynamicChartComponent
   ],
   imports: [
     CommonModule,
@@ -20,10 +24,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     MatMenuModule,
     ReactiveFormsModule,
+    ChartsModule
   ],
   exports:[
     HeaderComponent,
-    DialogComponent
+    DialogComponent,
+    DynamicChartComponent
   ]
 })
 export class SharedModule { }

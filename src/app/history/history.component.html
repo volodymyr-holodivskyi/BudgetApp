@@ -1,2 +1,29 @@
 <app-header [user]='user'></app-header>
-<p>history works!</p>
+<div class="container">
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+   
+   <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+  </ng-container>
+  <ng-container matColumnDef="source">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> source </th>
+    <td mat-cell *matCellDef="let element"> {{element.source}} </td>
+  </ng-container>
+  <ng-container matColumnDef="target">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> target </th>
+    <td mat-cell *matCellDef="let element"> {{element.target}} </td>
+  </ng-container>
+  <ng-container matColumnDef="value">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> value </th>
+    <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+  </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table> 
+
+<mat-paginator [pageSize]="5" [pageSizeOptions]="[1, 5, 10]"
+showFirstLastButtons 
+aria-label="Select page of history">
+</mat-paginator>
+</div>

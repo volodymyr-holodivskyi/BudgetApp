@@ -51,12 +51,9 @@ export class MainPageComponent implements OnInit {
       this.user=data; 
       this.user.spends=this.user.spends.filter(e=>{               
        return (((new Date().valueOf()>new Date(e.date).valueOf())&&(new Date().valueOf()<new Date(e.date).valueOf()+2592000000)))
-      }
-        
-          
-        
+      }                  
       )
-      console.log(this.user.spends);
+
       
     }) 
     

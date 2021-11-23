@@ -24,6 +24,9 @@ import { StatisticComponent } from './statistic/statistic.component';
 import { StatisticModule } from './statistic/statistic.module';
 import { HistoryComponent } from './history/history.component';
 import { ChartsModule } from 'ng2-charts';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator'
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -49,8 +52,11 @@ import { ChartsModule } from 'ng2-charts';
     MatProgressSpinnerModule,
     MatIconModule,
     MatMenuModule, 
-    MatButtonModule, ChartsModule,
-    
+    MatButtonModule,
+    ChartsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
     
   ],
   providers: [

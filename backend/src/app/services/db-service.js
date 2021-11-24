@@ -106,6 +106,17 @@ async function dbInit() {
     .then((res) => console.log(res))
     .catch((err) => console.log(err));
 
+    await connection2
+    .execute(
+      `create table if not exists avatarsImages (
+    userId int,
+    image varbinary(65535),
+    foreign key (userId) references users(id)
+    )`
+    )
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
+
   connection2.execute(`select * from users`).then(([rows, fields]) => {
     if (rows.length === 0) {
       connection2

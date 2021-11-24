@@ -159,6 +159,26 @@ function updateUserField(id,fieldName,value){
   .catch((err) => err);
 }
 
+function getUserAvatarImage(id){
+  return connection
+  .execute(
+    `select image from avatarsImages where userId='${id}'`
+  )
+  .then(([rows, fields]) => rows[0])
+  .catch((err) => err);
+}
+
+function updateUserAvatarImage(id,img){
+  return connection
+  .execute(
+    `update avatarsImages set image='${img}' where userId='${id}'`
+  )
+  .then(([rows, fields]) => rows)
+  .catch((err) => err);
+}
+
+
+
 module.exports = {
   getUserById,
   getUserByEmail,
@@ -172,5 +192,7 @@ module.exports = {
   updateUserExpences,
   updateUserLastVisitDate,
   changeUserBalance,
-  updateUserField
+  updateUserField,
+  getUserAvatarImage,
+  updateUserAvatarImage
 };

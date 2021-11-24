@@ -12,7 +12,9 @@ const {
   getUserById,
   updateUserLastVisitDate,
   changeUserBalance,
-  updateUserField
+  updateUserField,
+  getUserAvatarImage,
+  updateUserAvatarImage
 } = require("../services/users-service");
 const url =require("url")
   
@@ -56,6 +58,11 @@ function getUserInfo(req,res){
     return getUserById(id)
     .then(async (rows) => {
       let user = rows;
+      await getUserAvatarImage(id).then((rows)=>{
+        if(rows){
+          user.avatar=rows;
+        }
+      })
       await getUserIncomes(id).then((rows) => (user.incomes = rows));
       await getUserSavings(id).then((rows) => (user.savings = rows));
       await getUserSpends(id).then((rows) => (user.spends = rows));
@@ -94,9 +101,6 @@ async function updateUserProfile(req,res){
       if (Object.hasOwnProperty.call(user, key)) {
         if(user[key]!==userData[key]&&key!=='lastVisitDate'){
          
-          //if(key==='balance')userData[key]=parseFloat(userData[key]);
-          
-          
           updateUserField(id,key,userData[key]);
         }
         
@@ -111,6 +115,17 @@ async function updateUserProfile(req,res){
  
 }
 
+async function changeUserAvatatImage(req,res){
+  const {id,formData}=req.body;
+  console.log(req.file);
+ // await updateUserAvatarImage(id,img)
+  await getUserById(id)
+  .then(async (rows) => {
+    return res.status(200).json({ user: rows });
+  })
+  .catch((err) => res.status(400).json({ message: err }));
+}
+
 
 module.exports = { 
   moveIncomeIntoSavings,
@@ -118,6 +133,7 @@ module.exports = {
   getUserInfo,
   UpdateUserBalance,
   checkPassword,
-  updateUserProfile
+  updateUserProfile,
+  changeUserAvatatImage
 };
  

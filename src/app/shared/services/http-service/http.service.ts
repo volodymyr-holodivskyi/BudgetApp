@@ -13,6 +13,7 @@ import { loginData } from '../../models/loginData';
 import { Router } from '@angular/router';
 import { StatisticField } from '../../models/statistic';
 import { DateService } from '../date-service/date.service';
+import { HistoryField } from '../../models/history';
 
 
 @Injectable({
@@ -126,7 +127,7 @@ export class HttpService {
     )
   }
 
-  getUserHistory(id:string|null){
+  getUserHistory(id:string|null):Observable<HistoryField[]>{
     const headers = new HttpHeaders().set(
       'Authorization',
       'Bearer ' + localStorage.getItem('token')
@@ -137,6 +138,9 @@ export class HttpService {
     return this.http.get('http://127.0.0.1:3000/history',{headers:headers,params:params}).pipe(
       map((data:any)=>{
         
+        data.map((e:HistoryField)=>{
+          return new HistoryField(data.source,data.sourceCategory,data.target,data.targetCategory,data.value,data.operationDate);
+        })
         return data;
       })
     )
@@ -173,7 +177,27 @@ export class HttpService {
       })
     )
   }
-
+  changeUserAvatar(id:string|null,img:File){
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + localStorage.getItem('token')
+    );
+    const formData=new FormData();
+    formData.append('id',<string>id);
+    //formData.append('image',img);
+    //formData.get('image');
+    //console.log(formData.get('image'));
+    
+    
+    
+    return this.http.post('http://127.0.0.1:3000/api/avatar',formData,{headers}).pipe(
+      map((data:any)=>{
+        console.log(data);
+        
+        return data;
+      
+      }))
+  }
   changeUserProfile(id:string|null,userData:User){
     const headers = new HttpHeaders().set(
       'Authorization',

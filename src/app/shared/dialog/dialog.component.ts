@@ -11,6 +11,10 @@ interface buttonStyles {
   icon?: string;
 }
 
+class ImageSnippet{
+  constructor(public src:string,public file:File){};
+}
+
 interface Patterns{
   [key:string]:RegExp;
 }
@@ -29,6 +33,7 @@ export class DialogComponent implements OnInit{
   availableSymbols: RegExp = /[0-9\/\*\+\-\.]/;
   operators: RegExp = /[\/\*\+\-]/;
   editForm:FormGroup;
+  selectedFile:ImageSnippet={src:'',file:<any>null};
   public isCorrectPassword:boolean=false;
   public editFieldValue:string|undefined;
   public patterns:Patterns={
@@ -101,7 +106,8 @@ export class DialogComponent implements OnInit{
     this.screenContent =
       this.elementRef.nativeElement.querySelector('.screenContent');
       this.editForm=formBuilder.group({
-        "editField":[""]
+        "editField":[""],
+        "avatarImage":[""]
       })
 
   }
@@ -215,9 +221,29 @@ export class DialogComponent implements OnInit{
       } 
     });
   }
-  editProfileField(category:string,value:string){
+  editProfileField(category:string,value:any){
+    console.log(value);
     if(!value) return;
+    
+    
     this.editFieldValue=value;   
     this.dialogRef.close(true);
+  }
+
+  processFile(imageInput:any){
+    const file:File=imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load',(e)=>{
+      
+      
+      this.selectedFile=new ImageSnippet(<string>e.target?.result,file);
+      console.log(this.selectedFile.file)
+      this.http.changeUserAvatar(<string>this.userId,this.selectedFile.file).subscribe(data=>{
+        
+        
+      });
+    })
+    reader.readAsDataURL(file);
   }
 }

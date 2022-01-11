@@ -1,0 +1,81 @@
+<div class="container py-3">
+    <form [formGroup]="registerForm" (ngSubmit)='register()' class="loginPanel">
+        <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="name"
+              id="floatingInput"
+              placeholder="name"
+            />
+            <label for="floatingInput">Name</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="surname"
+              id="floatingInput"
+              placeholder="surname"
+            />
+            <label for="floatingInput">Surname</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              id="floatingInput"
+              placeholder="email"
+              autocomplete="no"
+            />
+            <label for="floatingInput">Email</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="password"
+              class="form-control"
+              formControlName="password"
+              id="floatingInput"
+              placeholder="password"
+              autocomplete="new-password"
+            />
+            <label for="floatingInput">Password</label>
+          </div>
+          <div class="mb-3">
+              <button (click)="openDialog('savings')">Add Saving</button>
+          </div>
+          <div class="d-flex flex-wrap">
+            <div *ngFor="let item of newUserData['savings'];let i=index" class="block mx-2">
+              <div>{{item.category}} </div>
+              <div class="circle" (contextmenu)='onRightClick($event,i)'>
+                <div style="visibility: hidden; position: fixed"
+                    [style.left]="contextMenuPosition.x"
+                    [style.top]="contextMenuPosition.y"
+                    [matMenuTriggerFor]="contextMenu">
+                  </div>
+                <mat-icon>{{item.icon}} </mat-icon>
+                <mat-menu #contextMenu='matMenu'>
+                  <div matMenuContent>
+                    <button mat-menu-item (click)="openDialog('savings','edit',edit_index)">Edit</button>
+                    <button mat-menu-item (click)="onDelete('savings',edit_index)" >Remove</button>
+                  </div>                
+                </mat-menu>
+              </div>
+              <div>{{item.value}}</div>    
+            </div>
+          </div>
+          
+         <div class="mb-3">
+             <button (click)="openDialog('spends')">Add spend</button>
+         </div>
+         <div *ngFor="let item of newUserData['spends'];let i=index">
+            <div>{{item.category}}</div>
+            <div class="circle">
+              <mat-icon>{{item.icon}}</mat-icon>
+            </div>
+            <div>{{item.value}}</div>
+            
+          </div>
+    </form>
+</div>

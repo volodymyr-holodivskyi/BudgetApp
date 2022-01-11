@@ -16,13 +16,24 @@
         
         
         <div class="d-flex flex-wrap">
-            <div class="title my-3">
+            <div class="title my-3 px-3">
                 SAVINGS
             </div>
             <div *ngFor="let saving of user.savings;let i=index" class="block mx-3">
                 <div class="categoryTitle">{{saving.category}}</div>
-                <div class="circle" [class.pulsar]='highlight.savings' [class.selected]='selected.savings===i&&highlight.spends' (click)="openConfirmationDialog('savings',i)" (click)="moveSavings(i)">
+                <div class="circle" [class.pulsar]='highlight.savings' [class.selected]='selected.savings===i&&highlight.spends' (click)="openConfirmationDialog('savings',i)" (click)="moveSavings(i)" (contextmenu)='onRightClick($event,i,"savings")'>
+                    <div style="visibility: hidden; position: fixed"
+                    [style.left]="contextMenuPosition.x"
+                    [style.top]="contextMenuPosition.y"
+                    [matMenuTriggerFor]="contextMenuSavings">
+                  </div> 
                     <mat-icon>{{saving.icon}}</mat-icon>
+                    <mat-menu #contextMenuSavings='matMenu'>
+                        <div matMenuContent>
+                          <button mat-menu-item (click)="openDialog('savings','edit',edit_index)">Edit</button>
+                          <button mat-menu-item (click)="onDelete('savings',edit_index)" >Remove</button>
+                        </div>                
+                      </mat-menu>
                 </div>
                 <div>{{saving.value|currency}}</div>
             </div>
@@ -31,13 +42,24 @@
             </div>
         </div>
         <div class="d-flex flex-wrap">
-            <div class="title my-3">
+            <div class="title my-3 px-3">
                 SPENDS
             </div>
             <div *ngFor="let spend of user.spends;let i=index" class="block mx-3">
                 <div class="categoryTitle">{{spend.category}}</div>
-                <div class="circle" [class.pulsar]='highlight.spends' (click)="openConfirmationDialog('spends',i)">
+                <div class="circle" [class.pulsar]='highlight.spends' (click)="openConfirmationDialog('spends',i)" (contextmenu)='onRightClick($event,i,"spends")'>
+                    <div style="visibility: hidden; position: fixed"
+                    [style.left]="contextMenuPosition.x"
+                    [style.top]="contextMenuPosition.y"
+                    [matMenuTriggerFor]="contextMenuSpends">
+                  </div> 
                     <mat-icon>{{spend.icon}}</mat-icon>
+                    <mat-menu #contextMenuSpends='matMenu'>
+                        <div matMenuContent>
+                          <button mat-menu-item (click)="openDialog('spends','edit',edit_index)">Edit</button>
+                          <button mat-menu-item (click)="onDelete('spends',edit_index)" >Remove</button>
+                        </div>                
+                      </mat-menu>
                 </div>
                 <div>{{spend.value|currency}}</div>
             </div>

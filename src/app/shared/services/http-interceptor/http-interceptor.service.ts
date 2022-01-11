@@ -7,7 +7,6 @@ import {
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ToastrService } from 'ngx-toastr';
 import { NotifyService } from '../notify-service/notify.service';
 
 @Injectable({

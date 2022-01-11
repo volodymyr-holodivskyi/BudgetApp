@@ -8,6 +8,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DynamicChartComponent } from './dymamic-chart/dymamic-chart.component';
 import { ChartsModule } from 'ng2-charts';
+import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { IconPickerComponent } from './icon-picker/icon-picker.component';
 
 
 
@@ -16,7 +22,9 @@ import { ChartsModule } from 'ng2-charts';
   declarations: [
     HeaderComponent,
     DialogComponent,
-    DynamicChartComponent
+    DynamicChartComponent,
+    RegisterDialogComponent,
+    IconPickerComponent
   ],
   imports: [
     CommonModule,
@@ -24,12 +32,17 @@ import { ChartsModule } from 'ng2-charts';
     MatIconModule,
     MatMenuModule,
     ReactiveFormsModule,
-    ChartsModule
+    ChartsModule,
+    MatPaginatorModule,
+    MatInputModule,
+    MatCardModule,
+    MatButtonModule
   ],
   exports:[
     HeaderComponent,
     DialogComponent,
-    DynamicChartComponent
+    DynamicChartComponent,
+    IconPickerComponent
   ]
 })
 export class SharedModule { }

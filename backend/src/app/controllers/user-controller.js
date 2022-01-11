@@ -14,7 +14,10 @@ const {
   changeUserBalance,
   updateUserField,
   getUserAvatarImage,
-  updateUserAvatarImage
+  updateUserAvatarImage,
+  updateCategory,
+  setUserBalance,
+  setUserExpences
 } = require("../services/users-service");
 const url =require("url")
   
@@ -35,10 +38,10 @@ async function moveIncomeIntoSavings(req, res) {
 }
 
 async function moveSavingsIntoSpends(req, res) {
-  const { id, savingsCategory, spendsCategory, value } = req.body;
+  const { id, savingsCategory, spendsCategory, value,date } = req.body;
   
   await updateUserSavings(id, savingsCategory, value, "-");
-  await updateUserSpends(id, spendsCategory, value, "+");
+  await updateUserSpends(id, spendsCategory, value, "+",date);
   await updateUserBalance(id, value, "-");
   await updateUserExpences(id, value, "+");
   await getUserById(id)
@@ -58,11 +61,6 @@ function getUserInfo(req,res){
     return getUserById(id)
     .then(async (rows) => {
       let user = rows;
-      await getUserAvatarImage(id).then((rows)=>{
-        if(rows){
-          user.avatar=rows;
-        }
-      })
       await getUserIncomes(id).then((rows) => (user.incomes = rows));
       await getUserSavings(id).then((rows) => (user.savings = rows));
       await getUserSpends(id).then((rows) => (user.spends = rows));
@@ -126,6 +124,23 @@ async function changeUserAvatatImage(req,res){
   .catch((err) => res.status(400).json({ message: err }));
 }
 
+async function editUserCategory(req,res){
+  const {id,section,prevCategoryName,editData}=req.body;
+  await updateCategory(id,section,prevCategoryName,editData);
+  return getUserById(id).then(async user=>{
+    await getUserIncomes(id).then((rows) => (user.incomes = rows));
+    await getUserSavings(id).then((rows) => (user.savings = rows));
+    await getUserSpends(id).then((rows) => (user.spends = rows));
+    await setUserBalance(id).then(data=>user.balance=data);
+    await setUserExpences(id).then(data=>user.expences=data);
+    return res.status(200).json({ user: user })
+  })
+  .catch((err) =>{
+    console.log(err);
+   return res.status(400).json({ message: err })
+  } );
+}
+
 
 module.exports = { 
   moveIncomeIntoSavings,
@@ -134,6 +149,7 @@ module.exports = {
   UpdateUserBalance,
   checkPassword,
   updateUserProfile,
-  changeUserAvatatImage
+  changeUserAvatatImage,
+  editUserCategory
 };
  

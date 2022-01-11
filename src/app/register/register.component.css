@@ -1,0 +1,38 @@
+.loginPanel{
+    
+    border-radius:10px;
+    border: 1px solid gray;
+    position: relative;
+    padding: 3rem;    
+    width:  50%;
+    margin: auto;
+}
+
+.circle{
+    width: 64px;
+    height: 64px;
+    padding: 1em;
+    border: 2px solid #20c997;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.block{
+    width: 64px;
+    font-size: 0.8rem;
+    text-align: center;
+    color: rgb(129, 128, 128);
+}
+.title{
+    width: 100%;
+    color: rgb(129, 128, 128);
+    border-bottom: 2px solid rgb(129, 128, 128);
+}
+
+.circle mat-icon{
+    color:rgb(153, 153, 153);
+    font-size: 2em;
+}

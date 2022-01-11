@@ -8,3 +8,6 @@
 .user-field:hover>.edit-icon{
     opacity: 1;
 }
+.btn-con{
+    width: 50%;
+}

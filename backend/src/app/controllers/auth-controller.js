@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const LocalStrategy = require("passport-local").Strategy;
 const JWTStrategy = passportJWT.Strategy;
 
-const { getUserByEmail, getUserIncomes, getUserSavings, getUserSpends, getUserById, updateUserLastVisitDate } = require("../services/users-service");
+const { getUserByEmail, getUserIncomes, getUserSavings, getUserSpends, getUserById, updateUserLastVisitDate, setUserBalance, setUserExpences } = require("../services/users-service");
 const config = require("../config");
 
 passport.serializeUser(function (user, done) {
@@ -28,7 +28,7 @@ passport.use(
     async function (email, password, cb) {
       return getUserByEmail(email)
         .then(async rows => {
-          if (rows.length === 0) {
+          if (!rows) {
             return cb(null, false, { message: "User was not found" });
           }
           const validPassword = bcrypt.compareSync(password, rows.password);
@@ -54,14 +54,16 @@ passport.use(
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
       secretOrKey: config.SECRET_KEY,
     },
-    function (jwtPayload, cb) {
-      const expirationDate = new Date(jwtPayload.exp * 1000);
-      if (expirationDate < new Date()) {
-        return cb(null, false);
+    async (token, done) => {
+      try {
+        return done(null, token.user);
+      } catch (error) {
+        console.log(error);
+        done(error);
       }
-      cb(null, jwtPayload.user);
     }
-  )
+    )
+  
 );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,10 +84,12 @@ function loginAuthenticate(req, res, next) {
         }
   
         const token = jwt.sign({ user: user }, config.SECRET_KEY, {
-          expiresIn: 60,
+          expiresIn: 300,
         });
         let refreshToken = randToken.uid(256);
         refreshTokens[refreshToken] = user.id;
+        await setUserBalance(user.id).then(data=>user.balance=data);
+        await setUserExpences(user.id).then(data=>user.expences=data);
         await updateUserLastVisitDate(user.id).then(data=>user.lastVisitDate=data);
         return res.json({ user: user, token: token, refreshToken: refreshToken });
       });
@@ -99,11 +103,11 @@ function loginAuthenticate(req, res, next) {
       getUserById(id)
         .then((rows) => {
           const token = jwt.sign({ user: rows }, config.SECRET_KEY, {
-            expiresIn: 60,
+            expiresIn: 300,
           });
           return res.json({ token: token });
         })
-        .catch((err) => res.status(401).json({ message: "Unauthorized" }));
+        .catch((err) => res.status(401).json({ message: err }));
     } else {
       return res.status(401).json({ message: "Unauthorized" });
     }

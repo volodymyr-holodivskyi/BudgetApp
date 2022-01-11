@@ -1,13 +1,13 @@
 export class HistoryField{
     
-    source:string;
-    sourceCategory:string;
-    target:string;
-    targetCategory:string;
-    value:string;
-    operationDate:string;
+    source:string|undefined;
+    sourceCategory:string|undefined;
+    target:string|undefined;
+    targetCategory:string|undefined;
+    value:string|undefined;
+    operationDate:string|undefined;
     position:number;
-    constructor(source:string,sourceCategory:string,target:string,targetCategory:string,value:string,date:string) {
+    constructor(source:string|undefined,sourceCategory:string|undefined,target:string|undefined,targetCategory:string|undefined,value:string|undefined,date:string|undefined) {
       this.source=source;
       this.sourceCategory=sourceCategory;
       this.target=target;

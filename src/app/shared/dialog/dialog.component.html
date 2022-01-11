@@ -1,7 +1,12 @@
 <div class="d-flex justify-content-end">
-  <button mat-button class="btn btn-danger" (click)="dialogRef.close(false)">
-    X
-  </button>
+  
+  <div mat-dialog-content *ngIf="!showCalc&&!showEditConfirm" class="modal-body text-center fs-5">{{ confirmMessage }}</div>
+  <div>
+    <button mat-button class="btn btn-danger" (click)="dialogRef.close(false)">
+      X
+    </button>
+  </div>
+  
 </div>
  
 
@@ -10,7 +15,6 @@
     <div #screenContent class="screenContent mb-5"></div>
     <button *ngFor="let btn of buttons;let i =index" class={{btn.styles}} (click)="changeContent(btn.value)">{{btn.value}} <i class={{btn.icon}}></i></button>
 </div>
-<div class="d-flex justify-content-center"><div toastContainer></div></div>
 </div>
 <div mat-dialog-content *ngIf="showEditConfirm" class="modal-body">
   <div *ngIf="!isCorrectPassword">
@@ -51,6 +55,6 @@
   </form>
   
   </div>
- 
-<div mat-dialog-content *ngIf="!showCalc&&!showEditConfirm" class="modal-body text-center fs-5">{{ confirmMessage }}</div>
+</div>
+
 

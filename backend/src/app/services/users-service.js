@@ -49,8 +49,8 @@ function getUserSpends(id) {
     .catch((err) => err);
 }
 
-function getUserSpendValue(id,category){
-  return connection.execute(`select value from spends where userId='${id}' and category='${category}'`)
+function getUserSpendValue(id,category,date){
+  return connection.execute(`select value from spends where userId='${id}' and category='${category}' and date='${date}'`)
   .then(([rows, fields]) => rows[0])
   .catch((err) => err);
 }
@@ -85,15 +85,18 @@ async function updateUserSavings(id, category, value,operation) {
     .catch((err) => err);
 }
 
-async function updateUserSpends(id, category, value,operation) {
-  let updatedSpend=await getUserSpendValue(id,category).then(rows=>rows.value)
+async function updateUserSpends(id, category, value,operation,date) {
+  let updatedSpend=await getUserSpendValue(id,category,date).then(rows=>{
+   return rows.value;
+  });
+  
   switch(operation){
     case '+':updatedSpend+=value; break;
     case '-':updatedSpend-=value; break;
   }
   return connection
     .execute(
-      `update spends set value='${updatedSpend}' where category='${category}' and userId='${id}'`
+      `update spends set value='${updatedSpend}' where category='${category}' and userId='${id}' and date='${date}'`
     )
     .then(([rows, fields]) => rows)
     .catch((err) => err);
@@ -128,8 +131,8 @@ async function updateUserExpences(id,value,operation){
 }
 
 async function updateUserLastVisitDate(id){
-  let tmpDate=new Date().toLocaleDateString().split('.').reverse().join('.');
-  let tmpTime=new Date().toLocaleTimeString();
+  let tmpDate=new Date().toLocaleDateString('ru-RU').split('.').reverse().join('-');
+  let tmpTime=new Date().toLocaleTimeString('ru-RU');
   let currentDate=tmpDate+' '+tmpTime;
   return connection
   .execute(
@@ -138,6 +141,37 @@ async function updateUserLastVisitDate(id){
   .then(([rows, fields]) => currentDate)
   .catch((err) => err);
   
+}
+
+async function setUserBalance(id){
+  let result=0;
+  let totalSavings =await getUserSavings(id).then(rows=>rows);
+  for (const item of totalSavings) {
+    result+=item.value;
+  }
+  return connection
+  .execute(
+    `update users set balance=${result} where id='${id}'`
+  )
+  .then(([rows, fields]) => rows)
+  .catch((err) => err);
+}
+
+async function setUserExpences(id){
+  let result=0;
+  let totalSpends =await getUserSpends(id).then(rows=>rows);
+  totalSpends=totalSpends.filter(e=>{
+    return e.date.toLocaleDateString('ru-RU').split('.')[1]==new Date().getMonth()+1
+  })
+  for (const item of totalSpends) {
+    result+=item.value;
+  }
+  return connection
+  .execute(
+    `update users set expences=${result} where id='${id}'`
+  )
+  .then(([rows, fields]) => rows)
+  .catch((err) => err);
 }
 
 
@@ -177,10 +211,22 @@ function updateUserAvatarImage(id,img){
   .catch((err) => err);
 }
 
+function updateCategory(id,section,prevCategoryName,editData){
+  console.log(editData);
+  let sql=`update ${section} set category='${editData.category}',value='${+editData.value}',icon='${editData.icon}' where userId='${id}' and category='${prevCategoryName}'`;
+  if(editData.date) sql+=` and date='${editData.date}'`;
+  return connection
+  .execute(
+    sql
+  )
+  .then(([rows, fields]) => rows)
+  .catch((err) => err);
+}
+
 
 
 module.exports = {
-  getUserById,
+  getUserById,  
   getUserByEmail,
   getUserIncomes,
   getUserSavings,
@@ -194,5 +240,8 @@ module.exports = {
   changeUserBalance,
   updateUserField,
   getUserAvatarImage,
-  updateUserAvatarImage
+  updateUserAvatarImage,
+  setUserBalance,
+  setUserExpences,
+  updateCategory
 };

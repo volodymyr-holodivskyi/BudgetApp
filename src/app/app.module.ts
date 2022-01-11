@@ -27,6 +27,10 @@ import { ChartsModule } from 'ng2-charts';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatSortModule } from '@angular/material/sort';
+import { RegisterModule } from './register/register.module';
+import { RegisterComponent } from './register/register.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -37,6 +41,7 @@ import { MatSortModule } from '@angular/material/sort';
     ProfileComponent,
     StatisticComponent,
     HistoryComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +61,7 @@ import { MatSortModule } from '@angular/material/sort';
     ChartsModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
     
   ],
   providers: [

@@ -30,12 +30,18 @@ export class HistoryComponent implements OnInit,AfterViewInit {
     });
     this.httpService.getUserHistory(this.userId).subscribe(data=>{
       data.map((e)=>{
+        e.operationDate=this.dateService.transformDate(<string>e.operationDate);
+      })
+      data.sort((a,b)=>{
+        let tmpA = this.dateService.splitDateString(<string>a.operationDate);
+        let tmpB = this.dateService.splitDateString(<string>b.operationDate);
+        return  (new Date(tmpB.year,tmpB.month,tmpB.day,tmpB.hour,tmpB.minute,tmpB.second).valueOf())-(new Date(tmpA.year,tmpA.month,tmpA.day,tmpA.hour,tmpA.minute,tmpA.second).valueOf());
+      })
+      data.map((e)=>{
         e.position=data.indexOf(e)+1;
-        e.operationDate=this.dateService.transformDate(e.operationDate);
       })
       this.dataSource.data=data;
       
-      console.log(this.dataSource.data);
     })
     this.httpService.getToken(this.userId, this.userRefreshToken)?.subscribe();
     setInterval(() => {
@@ -49,7 +55,7 @@ export class HistoryComponent implements OnInit,AfterViewInit {
   }
   announceSortChange(sortState: Sort) {
     this.dataSource.data=this.dataSource.data.sort((a,b)=>{
-      return new Date(a.operationDate).valueOf() > new Date(b.operationDate).valueOf()?1:-1;
+      return new Date(<string>a.operationDate).valueOf() > new Date(<string>b.operationDate).valueOf()?1:-1;
     })
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);

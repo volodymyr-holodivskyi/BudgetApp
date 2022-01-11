@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router,NavigationStart,NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { HttpService } from '../shared/services/http-service/http.service';
 
@@ -43,6 +43,10 @@ export class LoginComponent implements OnInit {
       
     })
     
+  }
+
+  toRegister(){
+    this.router.navigate(["/register"]);
   }
   
 }

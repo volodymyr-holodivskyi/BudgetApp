@@ -1,0 +1,57 @@
+:host .icon-list-card {
+    position: relative;
+    max-width: 100%;
+    padding: 0 8px;  
+    }
+    
+    .icon-list-controls-bottom mat-paginator {
+      background: none;
+    }
+  
+  :host .icon-list-card .icon-list-content-wrapper {
+    margin: auto;
+  }
+  :host .icon-list-card .icon-list-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+    overflow-y: auto;
+    margin-bottom: 0;
+  }
+  :host .icon-list-card .icon-list-controls {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background: inherit;
+  }
+  :host .icon-list-card mat-form-field {
+    width: 100%;
+    min-width: 75px;
+  }
+  :host .icon-list-card mat-form-field ::ng-deep .mat-form-field-wrapper {
+    margin-bottom: -1.25em;
+  }
+  :host .icon-list-card .icon-list-icon {
+    user-select: none;
+    margin-right: 16px;
+  }
+  :host .icon-list-card .icon-list-icon mat-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+  }
+  :host .icon-list-card .icon-list-controls-bottom {
+    position: sticky;
+   z-index: 99;
+   width: 100%;
+   bottom: 0;
+   left: 0;
+   background: inherit;
+   
+ }

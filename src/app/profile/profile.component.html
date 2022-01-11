@@ -1,5 +1,5 @@
 <app-header [user]='user'></app-header>
-<div class="container">
+<div class="container py-3">
     <div>
         <button mat-mini-fab color='primary' (click)="goBack()">
             <mat-icon>
@@ -17,43 +17,43 @@
             <mat-icon class="edit-icon" (click)="openConfirmationDialog('avatar')">edit</mat-icon>
          </div>
         <div class="d-flex py-3">
-            <div class="user-field">
+            <div class="user-field me-3">
                 <div>
-                 {{user.firstName}}
+                 Name: {{user.firstName}}
                 </div> 
                 <mat-icon class="edit-icon" (click)="openConfirmationDialog('firstName')">edit</mat-icon>
              </div>
              <div class="user-field">
                 <div>
-                 {{user.lastName}}
+                Surname: {{user.lastName}}
                 </div> 
                 <mat-icon class="edit-icon" (click)="openConfirmationDialog('lastName')">edit</mat-icon>
              </div>
         </div> 
          <div class="user-field py-3">
            <div> 
-             {{user.balance}}
+            Balance: {{user.balance}}
          </div>
          <mat-icon class="edit-icon" (click)="openConfirmationDialog('balance')">edit</mat-icon>
          </div>
          <div class="user-field py-3">
              <div>
-                 {{user.email}}
+                Email: {{user.email}}
              </div>
              <mat-icon class="edit-icon" (click)="openConfirmationDialog('email')">edit</mat-icon>
          </div>
          <div class="user-field py-3">
              <div>
-                 {{user.lastVisitDate}}
+                Last visit: {{user.lastVisitDate}}
              </div>
          </div>
          <div class="py-3">
-            <button (click)="openConfirmationDialog('password')">Change password</button>
+            <button (click)="openConfirmationDialog('password')" class="btn btn-secondary"> Change password</button>
          </div>
     </div>
-    <div>
-        <button (click)="saveEdit()">Save</button>
-        <button (click)="cancelEdit()">Cancel</button>
+    <div class="d-flex justify-content-evenly btn-con my-4">
+        <button (click)="saveEdit()" class="btn btn-outline-success">Save</button>
+        <button (click)="cancelEdit()" class="btn btn-outline-danger">Cancel</button>
     </div>
 </div>
 

@@ -6,7 +6,7 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../../models/user';
+import { Payments, User } from '../../models/user';
 import { map } from 'rxjs/operators';
 
 import { loginData } from '../../models/loginData';
@@ -40,6 +40,8 @@ export class HttpService {
       id: id,
       refreshToken: refreshToken,
     }; 
+    
+    
     if(id===null||refreshToken===null){
       
       this.router.navigate(['/login']);
@@ -47,7 +49,9 @@ export class HttpService {
     }
     return this.http.post('http://127.0.0.1:3000/auth/token', body).pipe(
       map((data: any) => {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.token);  
+        console.log(data);
+             
       })
     );
   }
@@ -57,6 +61,7 @@ export class HttpService {
       'Authorization',
       'Bearer ' + localStorage.getItem('token')
     );
+    
     const params=new HttpParams().set(
       'id',<string>id
     );
@@ -86,7 +91,7 @@ export class HttpService {
     )
   }
 
-  moveSavingInSpends(id:string|null,savingsCategory:string|undefined,spendsCategory:string|undefined,value:number){
+  moveSavingInSpends(id:string|null,savingsCategory:string|undefined,spendsCategory:string|undefined,value:number,date:string){
     const headers = new HttpHeaders().set(
       'Authorization',
       'Bearer ' + localStorage.getItem('token')
@@ -95,7 +100,8 @@ export class HttpService {
       id: id,
       savingsCategory: savingsCategory,
       spendsCategory: spendsCategory,
-      value: value
+      value: value,
+      date:date
     }
     return this.http.post('http://127.0.0.1:3000/api/spend',body,{headers}).pipe(
       map((data:any)=>{
@@ -184,12 +190,7 @@ export class HttpService {
     );
     const formData=new FormData();
     formData.append('id',<string>id);
-    //formData.append('image',img);
-    //formData.get('image');
-    //console.log(formData.get('image'));
-    
-    
-    
+   
     return this.http.post('http://127.0.0.1:3000/api/avatar',formData,{headers}).pipe(
       map((data:any)=>{
         console.log(data);
@@ -207,13 +208,54 @@ export class HttpService {
       id: id,
       userData: userData
     }
-    return this.http.post('http://127.0.0.1:3000/api/edit',body,{headers}).pipe(
+    return this.http.post('http://127.0.0.1:3000/api/edit/profile',body,{headers}).pipe(
       map((data:any)=>{
         
         return new User(data.user.id,data.user.firstName,data.user.lastName,data.user.email,data.user.password,data.user.balance,data.user.expences,data.user.lastVisitDate,data.user.avatar,data.user.incomes,data.user.savings,data.user.spends)
       
       })
     )
+  }
+
+  addToHistory(id:string|null,operationInfo:HistoryField){
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + localStorage.getItem('token')
+    );
+    const body={
+      id: id,
+      operationInfo: operationInfo
+    }
+
+    return this.http.post('http://127.0.0.1:3000/history/addPost',body,{headers:headers}).pipe(
+      map((data:any)=>{
+        
+        data.map((e:HistoryField)=>{
+          return new HistoryField(data.source,data.sourceCategory,data.target,data.targetCategory,data.value,data.operationDate);
+        })
+        return data;
+      })
+    )
+  }
+
+  editCategory(id:string|null,section:string,prevCategoryName:string,editData:Payments){
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + localStorage.getItem('token')
+    );
+    const body={
+      id: id,
+      prevCategoryName: prevCategoryName,
+      section: section,
+      editData: editData
+    }
+
+    return this.http.put('http://127.0.0.1:3000/api/edit/category',body,{headers}).pipe(
+      map((data:any)=>{
+
+        return data;
+      }
+    ))
   }
 }
 

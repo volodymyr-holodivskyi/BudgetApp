@@ -27,13 +27,16 @@ export class ProfileComponent implements OnInit {
   let tmpTime =this.user.lastVisitDate.split("T")[1].slice(0,this.user.lastVisitDate.split("T")[1].indexOf('.'));
   let tmpH=(parseInt(tmpTime.split(":")[0])+offset).toString();
   +tmpH<10?tmpH='0'+tmpH:tmpH;
+  
   if(+tmpH>23){
-    tmpH=((+tmpH)-24).toString();
+    tmpH='0'+((+tmpH)-24).toString();
     tmpDate[2]=(parseInt(tmpDate[2])+1).toString()
   }
   tmpTime=tmpH+':'+tmpTime.slice(3);
     
   this.user.lastVisitDate=tmpDate.reverse().join('.')+' '+tmpTime;
+  
+  
     });
     
     this.httpService.getToken(this.userId, this.userRefreshToken)?.subscribe();
@@ -83,7 +86,7 @@ export class ProfileComponent implements OnInit {
   let tmpH=(parseInt(tmpTime.split(":")[0])+offset).toString();
   +tmpH<10?tmpH='0'+tmpH:tmpH;
   if(+tmpH>23){
-    tmpH=((+tmpH)-24).toString();
+    tmpH='0'+((+tmpH)-24).toString();
     tmpDate[2]=(parseInt(tmpDate[2])+1).toString()
   }
   tmpTime=tmpH+':'+tmpTime.slice(3);
@@ -104,7 +107,7 @@ export class ProfileComponent implements OnInit {
   let tmpH=(parseInt(tmpTime.split(":")[0])+offset).toString();
   +tmpH<10?tmpH='0'+tmpH:tmpH;
   if(+tmpH>23){
-    tmpH=((+tmpH)-24).toString();
+    tmpH='0'+((+tmpH)-24).toString();
     tmpDate[2]=(parseInt(tmpDate[2])+1).toString()
   }
   tmpTime=tmpH+':'+tmpTime.slice(3);

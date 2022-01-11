@@ -5,6 +5,11 @@ import { StatisticField } from '../models/statistic';
 import { DateService} from '../services/date-service/date.service'
 import { HttpService } from '../services/http-service/http.service';
 
+interface DateNValues{
+  date:string,
+  value:number
+}
+
 @Component({
   selector: 'app-dynamic-chart',
   templateUrl: './dymamic-chart.component.html',
@@ -13,8 +18,7 @@ import { HttpService } from '../services/http-service/http.service';
 export class DynamicChartComponent implements OnInit {
   public barChartOptions: ChartOptions = {
     responsive: true,
-    // We use these empty structures as placeholders for dynamic theming.
-    scales: { xAxes: [{}], yAxes: [{}] },
+    scales: { xAxes: [{}], yAxes: [{ticks:{beginAtZero:true}}] },
   };
   public barChartLabels: Label[] = [];
   public barChartType: ChartType = 'bar';
@@ -31,10 +35,14 @@ export class DynamicChartComponent implements OnInit {
     this.barChartLabels=this.dateService.createMonthLabels();
     this.httpService.getUserStats(this.userId).subscribe(data=>{
       this.userStatistic=data;
-      
-      
+      this.userStatistic.sort((a,b)=>{
+        return +a.date-+b.date;
+      })  
       let labels:string[]=[];
-    let values:number[][]=[];
+     console.log(this.userStatistic);
+     
+      
+    let values:DateNValues[][]=[];
     let ChartData: ChartDataSets[]=[];
     
     
@@ -43,55 +51,69 @@ export class DynamicChartComponent implements OnInit {
         labels.push(this.userStatistic[i].category);
       }
     }
-    
-    //console.log(this.dateService.monthBreakpoints());
-    
-    //console.log(values);
+
     
     if(this.userStatistic.length<labels.length*6){
-      while(this.userStatistic.length!==labels.length*6){
-        this.userStatistic.push({
-          category:'',
-          date:'',
-          value:'0'
-        });
-      }
-    }
-    let counter=1;
-    for(let i=0;i<this.userStatistic.length;i++){
-      
-      if(this.userStatistic[i].category===''){
-       
-        this.userStatistic[i].category=labels[labels.indexOf(this.userStatistic[i-counter].category)]
-          console.log(labels[labels.indexOf(this.userStatistic[i-counter].category)]);
-          
-        
-        counter+=2;
-      }
+      // while(this.userStatistic.length!==labels.length*6){
+      //   this.userStatistic.push({
+      //     category:'',
+      //     date:'',
+      //     value:'0'
+      //   });
+      // }
     }
     for(let i=0;i<labels.length;i++){
       values.push([]);
-      for(let j=0;j<this.userStatistic.length;j++){
+      for(let j=0;j<this.dateService.createMonthArray().length;j++){
+        values[i].push({date:'',value:0});
+      }
+      values[i].sort((a,b)=>{
+        return +a.date-+b.date;
+      })
+     
+      for(let j=0;j<this.dateService.createMonthArray().length;j++){
+        values[i][j].date=this.dateService.createMonthArray()[j].toString();
+      }
+      console.log(values[i]);
+    }
+
+    for(let i=0;i<labels.length;i++){
+      for(let j=0;j<this.userStatistic.length;j++){        
         if(this.userStatistic[j].category===labels[i]){
-          values[i].push(parseFloat(this.userStatistic[j].value))
+          for(let k=0;k<this.dateService.createMonthArray().length;k++){
+            if(this.userStatistic[j].date===this.dateService.createMonthArray()[k].toString()){
+              values[i][k]={date:this.dateService.createMonthArray()[k].toString(),value:+this.userStatistic[j].value}
+             
+              
+            }
+            
+           
+            
+          }
+         
         }
+        
       }
       
     }
-    console.log(this.userStatistic);
-
+    
+    
+    
     for(let i=0;i<labels.length;i++){
       let obj:ChartDataSets={}
       obj.label=labels[i];
-      //const tmp= this.userStatistic.filter(e=>e.category===labels[i]);
-      //obj.data=tmp.map(e=>parseFloat(e.value)).reverse();
-      obj.data=values[i].reverse();
+    
+      obj.data=values[i].map(e=>e.value);
+      console.log(obj.data);
+      
       ChartData.push(obj);
+      
+      
     }
     this.barChartData=ChartData;
-    //console.log(ChartData);
     
-    //const tmp=this.userStatistic?.map(e=>e.value);
+    
+    
     })
     
     

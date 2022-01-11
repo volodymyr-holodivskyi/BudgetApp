@@ -7,6 +7,19 @@ function getUserOperationsHistory(id){
     .catch((err) => err);
 }
 
+ function addUserOperationIntoHistory(id,source,target,sourceCategory,targetCategory,value,operationDate){
+     
+    return connection.execute(`insert into history (userId,source,target,sourceCategory,targetCategory,value,operationDate)
+                                values (${id},'${source}','${target}','${sourceCategory}','${targetCategory}',${value},'${operationDate}')`)
+    .then(([rows, fields]) => rows)
+    .catch((err) => {
+        console.log(err);
+    });
+   
+}
+
+
 module.exports={
-    getUserOperationsHistory
+    getUserOperationsHistory,
+    addUserOperationIntoHistory
 }

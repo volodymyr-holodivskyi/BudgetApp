@@ -1,0 +1,46 @@
+<div mat-dialog-content class="modal-body">
+    <form [formGroup]="addForm">
+        <div class="form-floating mt-3">
+            <input
+
+            type="text"
+            class="form-control"
+            formControlName="category"
+            id="floatingInput"
+            placeholder="category"
+            autocomplete="off"
+          />
+          <label for="floatingInput">Category</label>
+        </div>
+        <div class="alert alert-danger"
+        *ngIf="addForm.controls['category'].invalid && addForm.controls['category'].touched && addForm.controls['category'].value">
+        Incorect category name
+        </div>
+        <div class="form-floating mt-3">
+            <input
+
+            type="text"
+            class="form-control"
+            formControlName="value"
+            id="floatingInput"
+            placeholder="value"
+            autocomplete="off"
+          />
+          <label for="floatingInput">Value</label>
+        </div>
+        <div class="alert alert-danger"
+        *ngIf="addForm.controls['value'].invalid && addForm.controls['value'].touched && addForm.controls['value'].value">
+        Incorect value
+        </div>
+        <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="afterMenu">Choose icon
+          <mat-icon>{{icon}}</mat-icon>
+        </button>
+        <mat-menu #afterMenu="matMenu" xPosition="after">
+          <app-icon-picker [(icon)]="icon" (iconChange)="menuTrigger.closeMenu()" appearence='standard'></app-icon-picker>
+        </mat-menu>
+
+        <div class="d-flex justify-content-center my-3">
+            <button [disabled]='addForm.invalid' (click)="onSubmit()" class="btn btn-primary">{{operation}} {{addType}}</button>
+        </div>
+    </form>
+</div>

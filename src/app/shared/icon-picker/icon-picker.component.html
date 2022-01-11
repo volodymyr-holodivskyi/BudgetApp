@@ -1,0 +1,25 @@
+<div class="icon-list-card" (click)="$event.stopPropagation()" [style.color]="styleColor">
+    <div class="icon-list-controls">
+      <div class="icon-list-icon">
+      <mat-icon matPrefix [color]="color">{{icon.length ? icon : 'help_outline'}}</mat-icon>
+    </div>
+    <mat-form-field class="icon-list-form-field" [appearance]="appearance" [color]="color">
+      <input autofocus [formControl]="filterInput" matInput [placeholder]="icon || 'Select an icon...'"
+        autocomplete="off">
+      <button type="button" matSuffix (click)="filterInput.setValue('')" *ngIf="filterInput.value.length" mat-icon-button>
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+    <div class="icon-list-content" *ngIf="filteredIcon$ | async as filteredIcons">
+      <div class="icon-list-content-wrapper">
+        <button type="button" mat-icon-button *ngFor="let i of filteredIcons">
+          <mat-icon (click)="selectIcon(i.name)" [color]="color">{{i.name}}</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="icon-list-controls-bottom">
+      <mat-paginator [length]="filteredIconslength" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+        [hidePageSize]="hidePageSize" (page)="pageEvent$.next($event)"></mat-paginator>
+    </div>
+  </div>

@@ -1,8 +1,8 @@
-interface Payments{
+export interface Payments{
   category:string;
   value:number;
-  icon:string;
-  date:string;
+  icon:string|null;
+  date:string|null;
 }
 export class User {
     [key:string]:any;

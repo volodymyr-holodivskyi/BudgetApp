@@ -8,6 +8,7 @@ const routes: Routes = [
   {path:'profile',loadChildren:()=>import('../profile/profile.module').then(m=>m.ProfileModule)},
   {path:'statistic',loadChildren:()=>import('../statistic/statistic.module').then(m=>m.StatisticModule)},
   {path:'history',loadChildren:()=>import('../history/history.module').then(m=>m.HistoryModule)},
+  {path:'register',loadChildren:()=>import('../register/register.module').then(m=>m.RegisterModule)},
   {path:'',redirectTo:'login',pathMatch:'full'},
   {path:'**',loadChildren: ()=>import('../not-found/not-found.module').then(m=>m.NotFoundModule)}
 ];

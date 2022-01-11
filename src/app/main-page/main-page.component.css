@@ -26,7 +26,11 @@ h4{
     color: rgb(129, 128, 128);
     border-bottom: 2px solid rgb(129, 128, 128);
 }
-
+.categoryTitle{
+    height: 20px;
+    overflow: hidden;
+    word-break: break-all;
+}
 .bi-plus-circle{
     font-size: 4rem;
    line-height: 64px;

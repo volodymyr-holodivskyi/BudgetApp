@@ -4,6 +4,8 @@ import { CalculatorService } from '../services/calculator-service/calculator.ser
 import { HttpService } from '../services/http-service/http.service';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { DateService } from '../services/date-service/date.service';
+import { HistoryField } from '../models/history';
 
 interface buttonStyles {
   value: string;
@@ -54,6 +56,7 @@ export class DialogComponent implements OnInit{
   public sourceCategory: string | undefined;
   public target: string | undefined;
   public targetCategory: string | undefined;
+  public operationDate: string | undefined;
   public editCategoryName: string='';
   
   @ViewChild('screenContent') screenContent: ElementRef;
@@ -101,7 +104,8 @@ export class DialogComponent implements OnInit{
     private calculator: CalculatorService,
     private http: HttpService,
     private toastr:ToastrService,
-    private formBuilder:FormBuilder
+    private formBuilder:FormBuilder,
+    private dateService:DateService
   ) {
     this.screenContent =
       this.elementRef.nativeElement.querySelector('.screenContent');
@@ -112,6 +116,17 @@ export class DialogComponent implements OnInit{
 
   }
   ngOnInit(){
+    // this.http.getToken(localStorage.getItem('id'), localStorage.getItem('refreshToken'))?.subscribe(data=>{
+      
+      
+    // });
+    // setInterval(() => {
+    //   this.http.getToken(localStorage.getItem('id'), localStorage.getItem('refreshToken'))?.subscribe(data=>{
+        
+        
+    //   });
+    // }, 30000);
+   
     this.toastr.overlayContainer=this.toastContainer;
     this.isCorrectPassword=false;  
     this.editForm.controls['editField'].setValidators(Validators.pattern(this.patterns[this.editCategoryName]));
@@ -154,7 +169,7 @@ export class DialogComponent implements OnInit{
     this.screenContent.nativeElement.innerHTML += value;
   }
 
- onEnter() {
+  onEnter() {
   
 
     if (!this.screenContent.nativeElement.innerHTML) {
@@ -185,6 +200,9 @@ export class DialogComponent implements OnInit{
       return;
     }
     if (!this.operators.test(this.screenContent.nativeElement.innerHTML)) {
+      this.http.addToHistory(<string>this.userId,new HistoryField(this.source,this.sourceCategory,this.target,this.targetCategory,this.screenContent.nativeElement.innerHTML,this.operationDate)).subscribe(data=>{
+        
+      });  
       this.target === 'savings'
         ?this.http.moveIncomeInSavings(
             <string>this.userId,
@@ -196,9 +214,10 @@ export class DialogComponent implements OnInit{
             <string>this.userId,
             this.sourceCategory,
             this.targetCategory,
-            parseFloat(this.screenContent.nativeElement.innerHTML)
+            parseFloat(this.screenContent.nativeElement.innerHTML),
+            this.dateService.dateToSQLDate(false)
           ).toPromise().then(data=>this.dialogRef.close(true))
-            
+         
     }
     
     this.screenContent.nativeElement.innerHTML = this.calculator.calculate(
